@@ -1,0 +1,33 @@
+{
+  "name": "swimming",
+  "version": "1.0.0",
+  "description": "h5 game swimming cover ChangJiang",
+  "main": "index.js",
+  "scripts": {
+    "test": "null",
+    "pre": "webpack --config webpack.config.js",
+    "dev": "cross-env NODE_ENV=dev  webpack-dev-server --progress --colors --inline",
+    "build": "cross-env NODE_ENV=build webpack --config webpack.config.js"
+  },
+  "keywords": [
+    "h5",
+    "game"
+  ],
+  "author": "h.love.pure@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "mockjs": "^1.0.1-beta3",
+    "phaser-ce": "^2.8.1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.29.0",
+    "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
+  }
+}
