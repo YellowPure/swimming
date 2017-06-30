@@ -11,7 +11,7 @@ var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
 var config = {
 	entry: {
 		app: [
-			'webpack-dev-server/client?http://localhost:8080/',
+			'webpack-dev-server/client?http://localhost:8080/dist/',
 			path.resolve(__dirname, './src/index.js')
 		]
 	},

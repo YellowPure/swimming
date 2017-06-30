@@ -17,7 +17,6 @@ class App {
 		game.state.add('Preloader', new Preloader(game));
 		game.state.add('MainMenu', new MainMenu(game));
 		game.state.add('Game', new Game(game));
-
 		game.state.start('Boot');
 	}
 }

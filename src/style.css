@@ -4,5 +4,9 @@
 	height: 100%;
 }
 body {
-	background-color: #ff0;
+	background-color: #2d2d2d;
+}
+* {
+	margin: 0;
+	padding: 0;
 }
