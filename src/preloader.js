@@ -45,10 +45,13 @@ export default class Preloader{
 		this.load.image('red', './dist/images/red.png');
 		this.load.image('btn_return', './dist/images/btn_return.png');
 		this.load.image('bg_1', './dist/images/bg_1.png');
+		this.load.image('bg_2', './dist/images/bg_2.png');
+		this.load.image('bg_3', './dist/images/bg_3.png');
 		this.load.spritesheet('btn_left', './dist/images/btn_left.png', 133, 133);
 		this.load.spritesheet('btn_right', './dist/images/btn_right.png', 133, 133);
 		this.load.spritesheet('btn_up', './dist/images/btn_up.png', 133, 133);
-		// this.load.spritesheet('enemy', 'assets/enemy.png', 32, 32);
+		this.load.atlas('person', './dist/images/person.png', './dist/images/person.json');
+		this.load.atlas('enemy', './dist/images/enemy.png', './dist/images/enemy.json',);
 		// this.load.audio('explosion', ['assets/explosion.ogg', 'assets/explosion.wav']);
 		// this.load.audio('playerExplosion', ['assets/player-explosion.ogg',
 		// 'assets/player-explosion.wav']);

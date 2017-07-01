@@ -8,6 +8,7 @@ import Preloader from './preloader';
 import MainMenu from './mainmenu';
 import Game from './game';
 import End from './end';
+import './config.js';
 
 class App {
 	constructor() {
