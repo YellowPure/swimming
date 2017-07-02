@@ -54,9 +54,9 @@ export default class Game{
 		 */
 		this.total = window.gamedata.total;
 		/**
-		 * 速度
+		 * 加速度
 		 */
-		this.speed = window.gamedata.speed * 10;
+		this.acceleration = 0;
 
 		this.cursors = null;
 		/**
@@ -79,6 +79,10 @@ export default class Game{
 		 * 是否通关
 		 */
 		this.completeSwim = false;
+
+		this.endPanel = null;
+
+		this.BASIC_SPEED = 100;
 	}
 
 	create() {
@@ -95,7 +99,6 @@ export default class Game{
 
 	update() {
 		if(this.isstart) {
-
 			this.movePlayer();
 			this.moveEnemies();
 			// 检测碰撞、生成敌人、开火、响应玩家输入，任何东西都可以放在这里
@@ -105,15 +108,21 @@ export default class Game{
 		// this.spawnEnemies();
 		// this.processPlayserInput();
 		// this.time++;
+
 		if(this.end == true) {
-			this.showEndPanel();
+			if(!this.endPanel) {
+				this.showEndPanel();
+			}
 		}
 		
 	}
 
 	moveEnemies() {
 		if (!this.isstart) return;
-		this.enemyPool.y -=2;
+		this.enemyPool.forEachAlive((child) => {
+			child.body.velocity.y = -this.BASIC_SPEED;
+		});
+		// this.enemyPool.y -=2;
 	}
 
 	/**
@@ -129,17 +138,22 @@ export default class Game{
 			}
 		}, this, true);
 	}
-
-	updateScore() {
+	/**
+	 * 每秒更新米数
+	 */
+	updatePoint() {
+		this.point = Math.floor((this.game.world.height - this.player.body.y) / this.game.world.height * window.gamedata.total);
+		this.pointText.text = this.point + '米';
 	}
 
 	movePlayer() {
 		if (!this.isstart) return;
 		// this.player.body.setZeroVelocity();
-		let speed = this.speed + this.acceleration;
+		let speed = this.acceleration + this.BASIC_SPEED;
 		if(Math.abs(this.curtime - Date.now()) > 1000) {
 			this.curtime = Date.now();
 			this.acceleration = 0;
+			this.updatePoint();
 		}
 
 		if(this.isCollisions == true) {
@@ -148,7 +162,9 @@ export default class Game{
 			this.player.body.velocity.y = -speed;
 		}
 
-		if(this.player.body.y <= 0 ) {
+		if(this.player.body.y <= 200 ) {
+			this.score = 88;
+			this.point = window.gamedata.total;
 			this.completeSwim = true;
 			this.end = true;
 		}
@@ -173,8 +189,7 @@ export default class Game{
 	}
 
 	render() {
-		this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    	this.game.debug.spriteCoords(this.player, 32, 500);
+
 	}
 	/**
 	 * 倒计时
@@ -193,7 +208,7 @@ export default class Game{
 		bar.height = this.BAR_HEIGHT;
 		this.bar = bar;
 		this.bar.fixedToCamera = true;
-		this.countdownSp = this.add.sprite(this.game.width / 2, this.game.height / 2, 'three');
+		this.countdownSp = this.add.sprite(this.game.width / 2 - 50, this.game.height / 2 - 100, 'three');
 		this.countdownSp.fixedToCamera = true;
 		this.countEvent = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCount, this);
 		this.timeEvent = this.game.time.events.repeat(Phaser.Timer.SECOND, this.timenum,  this.updateTime, this);
@@ -243,16 +258,17 @@ export default class Game{
 		}
 	}
 
-	collisions() {
+	collisions(player, enemy) {
 		console.log('collisions');
 		this.isCollisions = true;
+		// enemy.alive = false;
+		enemy.body.enable = false;
 		this.player.loadTexture('hit');
 		this.player.animations.add('hit');
 		this.player.animations.play('hit', 5, true);
 		// this.player.body.velocity.y = 0;
 		setTimeout(() => {
 			this.isCollisions = false;
-			// this.player.body.velocity.y = -(this.speed + this.acceleration);
 			this.player.loadTexture('person');
 			this.player.animations.play('run', 5, true);
 		}, 2000);
@@ -269,19 +285,22 @@ export default class Game{
 	showEndPanel() {
 		console.log('showEndPanel');
 		let texture = this.completeSwim == true ? 'pop2' : 'pop1';
-		this.endPanel = this.add.sprite(this.game.width / 2, this.game.height / 2, texture);
+		this.game.time.events.remove(this.timeEvent);
+
+		this.endPanel = this.add.sprite(this.game.width / 2 - 350, this.game.height / 2 - 320, texture);
 		this.endPanel.fixedToCamera = true;
-		this.endPanel.addChild(this.game.make.text(0, 0, this.point + '米', {font: '40px', fill: '#f00'}));
-		this.endPanel.addChild(this.game.make.text(100, 100, this.score + '楼币', {font: '40px', fill: '#f00'}));
-		this.endPanel.addChild(this.game.make.button(200, 200, 'btn_return', this.quitGame, this));
-		this.game.paused = true;
+		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2, this.endPanel.height / 2, this.point + '米', {font: '40px', fill: '#f00'}));
+		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2, this.endPanel.height / 2 + 50, this.score + '楼币', {font: '40px', fill: '#f00'}));
+		this.endPanel.addChild(this.game.make.button(this.endPanel.width / 2 - 105, this.endPanel.height /2 + 100, 'btn_return', this.quitGame, this));
 		// this.quitGame();
 	}
 
 	setupBackground() {
 		// this.add.s
-		this.add.tileSprite(0, 0, this.game.width, this.game.height * 5, 'bg_2');
-		let bg1 = this.add.sprite(0, this.game.height * 4, 'bg_1');
+		let tile = this.add.tileSprite(0, 0, this.game.width, this.game.height * 10, 'bg_2');
+		tile.tileScale.x = window.innterWidth / 750;
+		tile.tileScale.y = window.innterHeight / 1205;
+		let bg1 = this.add.sprite(0, this.game.height * 9, 'bg_1');
 		bg1.width = window.innerWidth;
 		bg1.height = window.innerHeight;
 
@@ -289,7 +308,7 @@ export default class Game{
 		bg3.width = window.innerWidth;
 		bg3.height = window.innerHeight;
 
-		this.game.world.setBounds(0, 0, this.game.width, this.game.height * 5);
+		this.game.world.setBounds(0, 0, this.game.width, this.game.height * 10);
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	}
@@ -356,7 +375,7 @@ export default class Game{
 
 	onUpHandler() {
 		console.log('to up');
-		this.acceleration += this.speed;
+		this.acceleration += window.gamedata.speed;
 	}
 
 	setupPlayer() {
@@ -385,13 +404,19 @@ export default class Game{
 			} else if(ran == 2) {
 				x = this.game.width - 200;
 			}
-			y = Math.floor(Math.random() * this.game.world.height);
-
+			// y = Math.floor(Math.random() * this.game.world.height);
+			y = this.randomPos(window.gamedata.enemy, i, this.game.world.height);
 			let enemy = this.enemyPool.create(x, y, 'enemy');
 			enemy.scale.setTo(2, 2);
 			// enemy.body.setCollisionGroup(this.enemyCollisionGroup);
 			// enemy.body.collides([this.playerCollisionGroup]);
 		}
+	}
+
+	randomPos(len, index, totalHeight) {
+		return index * totalHeight / len;
+		// let maxLen = Math.min(len, Math.floor(totalHeight / height));
+		// let arr = Array.from({length: maxLen});
 	}
 
 	setupText() {
@@ -419,10 +444,30 @@ export default class Game{
 	}
 
 	quitGame() {
+		this.end = false;
 		this.player.destroy();
 		this.enemyPool.destroy();
+		this.isstart = false;
+		this.count = 0;
+		this.score = 0;
 		this.scoreText.destroy();
-		// this.returnText.destroy();
+		this.point = 0;
+		this.pointText.destroy();
+		this.timenum = 60;
+		this.timeText.destroy();
+		this.BAR_WIDTH = 1050;
+		this.BAR_HEIGHT = 1290;
+		this.mask.destroy();
+		this.leftBtn.destroy();
+		this.rightBtn.destroy();
+		this.upBtn.destroy();
+		this.cursors = null;
+		this.curload = 2;
+		this.acceleration = 0;
+		this.istween = false;
+		this.isCollisions = false;
+		this.completeSwim = false;
+		this.endPanel.destroy();
 
 		this.state.start('MainMenu');
 	}

@@ -12,7 +12,7 @@ import './config.js';
 
 class App {
 	constructor() {
-		let game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.CANVAS, 'app');
+		let game = new Phaser.Game('100%', '100%', Phaser.CANVAS, 'app');
 
 		game.state.add('Boot', new Boot(game));
 		game.state.add('Preloader', new Preloader(game));
