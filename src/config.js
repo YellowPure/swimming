@@ -1,5 +1,5 @@
 window.gamedata = {
-    speed: 6,
+    speed: 60,
     total: 1158,
-    enemy: 20
+    enemy: 5
 };

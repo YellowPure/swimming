@@ -52,6 +52,7 @@ export default class Preloader{
 		this.load.spritesheet('btn_up', './dist/images/btn_up.png', 133, 133);
 		this.load.atlas('person', './dist/images/person.png', './dist/images/person.json');
 		this.load.atlas('enemy', './dist/images/enemy.png', './dist/images/enemy.json',);
+		this.load.atlas('hit', './dist/images/hit.png', './dist/images/hit.json',);
 		// this.load.audio('explosion', ['assets/explosion.ogg', 'assets/explosion.wav']);
 		// this.load.audio('playerExplosion', ['assets/player-explosion.ogg',
 		// 'assets/player-explosion.wav']);
