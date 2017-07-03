@@ -37,8 +37,8 @@ export default class Game{
 		 */
 		this.timenum = 60;
 		this.timeText = null;
-		this.BAR_WIDTH = 1050;
-		this.BAR_HEIGHT = 1290;
+		this.BAR_WIDTH = 350;
+		this.BAR_HEIGHT = 430;
 		/**
 		 * 倒计时遮罩
 		 */
@@ -53,10 +53,6 @@ export default class Game{
 		 * 总距离
 		 */
 		this.total = window.gamedata.total;
-		/**
-		 * 加速度
-		 */
-		this.acceleration = 0;
 
 		this.cursors = null;
 		/**
@@ -67,6 +63,11 @@ export default class Game{
 		 * 加速度
 		 */
 		this.acceleration = 0;
+		/**
+		 * 点击次数
+		 * @type {Number}
+		 */
+		this.clickcount = 0;
 
 		this.curtime = Date.now();
 		/**
@@ -83,6 +84,12 @@ export default class Game{
 		this.endPanel = null;
 
 		this.BASIC_SPEED = 100;
+
+		this.load1 = 20;
+
+		this.load2 = window.innerWidth / 2 - 18;
+
+		this.load3 = window.innerWidth - 80;
 	}
 
 	create() {
@@ -93,7 +100,7 @@ export default class Game{
 		this.setupPlayer();
 		this.setupText();
 		this.setupCtrl();
-		this.countDonw();
+		this.countDown();
 		// this.setupAudio();
 	}
 
@@ -132,7 +139,7 @@ export default class Game{
 		this.enemyPool.forEachAlive((child) => {
 			if(this.player.body.y < child.body.y) {
 				this.score++;
-				this.scoreText.text = this.score + '楼币';		
+				this.scoreText.text = this.score + '楼币';
 				child.alive = false;
 				console.log('push score');
 			}
@@ -155,6 +162,7 @@ export default class Game{
 			this.acceleration = 0;
 			this.updatePoint();
 		}
+		// this.game.physics.arcade.moveToXY(this.player, 0, this.player.body.y - this.game.world.height / 60, 60, 1000 );
 
 		if(this.isCollisions == true) {
 			this.player.body.velocity.y = 0;
@@ -194,7 +202,7 @@ export default class Game{
 	/**
 	 * 倒计时
 	 */
-	countDonw() {
+	countDown() {
 		let bmd = this.add.bitmapData(this.game.width, this.game.height);
 		bmd.ctx.beginPath();
 		bmd.ctx.rect(0, 0, this.game.width, this.game.height);
@@ -208,10 +216,9 @@ export default class Game{
 		bar.height = this.BAR_HEIGHT;
 		this.bar = bar;
 		this.bar.fixedToCamera = true;
-		this.countdownSp = this.add.sprite(this.game.width / 2 - 50, this.game.height / 2 - 100, 'three');
+		this.countdownSp = this.add.sprite(this.game.width / 2 - 122, this.game.height / 2 - 146, 'three');
 		this.countdownSp.fixedToCamera = true;
 		this.countEvent = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCount, this);
-		this.timeEvent = this.game.time.events.repeat(Phaser.Timer.SECOND, this.timenum,  this.updateTime, this);
 	}
 
 	updateTime() {
@@ -226,16 +233,16 @@ export default class Game{
 		this.count ++;
 		if(this.count == 1) {
 			this.countdownSp.destroy();
-			this.countdownSp = this.add.sprite(this.game.width / 2, this.game.height / 2, 'two');
+			this.countdownSp = this.add.sprite(this.game.width / 2 - 69, this.game.height / 2 - 69, 'two');
 			this.countdownSp.fixedToCamera = true;
 		} else if(this.count == 2) {
 			this.countdownSp.destroy();
-			this.countdownSp = this.add.sprite(this.game.width / 2, this.game.height / 2, 'one');
+			this.countdownSp = this.add.sprite(this.game.width / 2 - 37, this.game.height / 2 - 72, 'one');
 			this.countdownSp.fixedToCamera = true;			
 		} else if(this.count ==3) {
 			console.log('start');
 			this.countdownSp.destroy();
-			this.countdownSp = this.add.sprite(this.game.width / 2, this.game.height / 2, 'go');
+			this.countdownSp = this.add.sprite(this.game.width / 2 - 101, this.game.height / 2 - 65, 'go');
 			this.countdownSp.fixedToCamera = true;
 		} else if(this.count > 3) {
 			this.mask.destroy();
@@ -243,6 +250,8 @@ export default class Game{
 			this.countEvent && this.game.time.events.remove(this.countEvent);
 			this.bar && this.bar.destroy();
 			this.isstart = true;
+			// 开始游戏倒计时
+			this.timeEvent = this.game.time.events.repeat(Phaser.Timer.SECOND, this.timenum,  this.updateTime, this);
 			this.start();
 		}
 	}
@@ -283,23 +292,30 @@ export default class Game{
 	}
 
 	showEndPanel() {
-		console.log('showEndPanel');
+		// console.log('showEndPanel');
 		let texture = this.completeSwim == true ? 'pop2' : 'pop1';
 		this.game.time.events.remove(this.timeEvent);
 
-		this.endPanel = this.add.sprite(this.game.width / 2 - 350, this.game.height / 2 - 320, texture);
+		this.endPanel = this.add.sprite(this.game.width / 2 - 175, this.game.height / 2 - 162, texture);
 		this.endPanel.fixedToCamera = true;
-		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2, this.endPanel.height / 2, this.point + '米', {font: '40px', fill: '#f00'}));
-		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2, this.endPanel.height / 2 + 50, this.score + '楼币', {font: '40px', fill: '#f00'}));
-		this.endPanel.addChild(this.game.make.button(this.endPanel.width / 2 - 105, this.endPanel.height /2 + 100, 'btn_return', this.quitGame, this));
+		this.endPanel.scale.setTo(.5, .5);
+
+		this.endPanel.addChild(this.game.make.text(this.endPanel.width , this.endPanel.height + 20, this.point, {font: '28px', fill: '#f00'}));
+		this.endPanel.addChild(this.game.make.text(this.endPanel.width, this.endPanel.height + 70, this.score, {font: '28px', fill: '#f00'}));
+		this.endPanel.addChild(this.game.make.button(this.endPanel.width - 105, this.endPanel.height + 130, 'btn_return', this.quitGame, this));
 		// this.quitGame();
 	}
 
 	setupBackground() {
 		// this.add.s
 		let tile = this.add.tileSprite(0, 0, this.game.width, this.game.height * 10, 'bg_2');
-		tile.tileScale.x = window.innterWidth / 750;
-		tile.tileScale.y = window.innterHeight / 1205;
+		// let sp = this.game.make.sprite(0, this.game.height * 8, this.game.width, this.game.height, 'bg_2');
+		// sp.width = window.innerWidth;
+		// sp.height = window.innerHeight;
+		// this.game.add.existing(sp);
+		// console.log(window.innerWidth / 750, window.innerHeight / 1205);
+
+		tile.tileScale.setTo(window.innerWidth / 750, window.innerHeight / 1205);
 		let bg1 = this.add.sprite(0, this.game.height * 9, 'bg_1');
 		bg1.width = window.innerWidth;
 		bg1.height = window.innerHeight;
@@ -307,20 +323,24 @@ export default class Game{
 		let bg3 = this.add.sprite(0, 0, 'bg_3');
 		bg3.width = window.innerWidth;
 		bg3.height = window.innerHeight;
-
+		console.log(this.game.width, this.game.height);
 		this.game.world.setBounds(0, 0, this.game.width, this.game.height * 10);
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	}
 
 	setupCtrl() {
-		this.leftBtn = this.add.button(100, this.game.height - 200, 'btn_left', this.onLeftHandler, this, 0, 0, 1);
+		this.leftBtn = this.add.button(30, this.game.height - 75, 'btn_left', this.onLeftHandler, this, 0, 0, 1);
 		this.leftBtn.fixedToCamera = true;
-		this.rightBtn = this.add.button(this.game.width - 233, this.game.height - 200, 'btn_right', this.onRightHandler, this, 0, 0, 1);
+
+		this.rightBtn = this.add.button(this.game.width - 90, this.game.height - 75, 'btn_right', this.onRightHandler, this, 0, 0, 1);
 		this.rightBtn.fixedToCamera = true;
-		this.upBtn = this.add.button(this.game.world.centerX - 65 , this.game.height - 230, 'btn_up', this.onUpHandler, this, 0, 0, 1);
+		this.upBtn = this.add.button(this.game.world.centerX - 28 , this.game.height - 90, 'btn_up', this.onUpHandler, this, 0, 0, 1);
 		this.upBtn.fixedToCamera = true;
-		
+
+		this.leftBtn.scale.setTo(.5, .5);
+		this.upBtn.scale.setTo(.5, .5);
+		this.rightBtn.scale.setTo(.5, .5);
 	}
 
 	start() {
@@ -336,11 +356,11 @@ export default class Game{
 	tweenPlayer(load) {
 		let x;
 		if(load == 1) {
-			x = 200;
+			x = this.load1;
 		} else if(load == 2) {
-			x = this.game.world.centerX;
+			x = this.load2;
 		} else if(load == 3) {
-			x = this.game.width - 200;
+			x = this.load3;
 		}
 		let tween = this.game.add.tween(this.player.body).to({x: x}, 500,  Phaser.Easing.Linear.None, true);
 		tween.onStart.add(() => {
@@ -374,13 +394,13 @@ export default class Game{
 	}
 
 	onUpHandler() {
-		console.log('to up');
 		this.acceleration += window.gamedata.speed;
 	}
 
 	setupPlayer() {
-		this.player = this.add.sprite(this.game.world.centerX, this.game.world.height - 500, 'person');
-		this.player.scale.setTo(2, 2);
+		console.log(this.game.world.height);
+		this.player = this.add.sprite(this.load2, this.game.world.height - 240, 'person');
+		// this.player.scale.setTo(2, 2);
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		// this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -398,44 +418,48 @@ export default class Game{
 		for(let i = 0; i < window.gamedata.enemy; i++) {
 			let x, y, ran = Math.floor(Math.random() * 3);
 			if(ran == 0) {
-				x = 200;
+				x = this.load1;
 			} else if(ran == 1) {
-				x = this.game.world.centerX;
+				x = this.load2;
 			} else if(ran == 2) {
-				x = this.game.width - 200;
+				x = this.load3;
 			}
 			// y = Math.floor(Math.random() * this.game.world.height);
 			y = this.randomPos(window.gamedata.enemy, i, this.game.world.height);
 			let enemy = this.enemyPool.create(x, y, 'enemy');
-			enemy.scale.setTo(2, 2);
+			// enemy.scale.setTo(2, 2);
 			// enemy.body.setCollisionGroup(this.enemyCollisionGroup);
 			// enemy.body.collides([this.playerCollisionGroup]);
 		}
 	}
 
 	randomPos(len, index, totalHeight) {
+		console.log(index * totalHeight / len);
 		return index * totalHeight / len;
 		// let maxLen = Math.min(len, Math.floor(totalHeight / height));
 		// let arr = Array.from({length: maxLen});
 	}
 
 	setupText() {
-		let bgW = 180;
-		let lineH = 8;
-		let lineW = 60;
-		let sp1 = this.add.sprite(0, 0, 'time');
+		let bgW = 80;
+		let lineH = 17;
+		let lineW = 55;
+		let sp1 = this.add.sprite(20, 10, 'time');
+		sp1.scale.setTo(.5, .5);
+		// sp1.scale.setTo(1.5, 1.5);
 		sp1.fixedToCamera = true;
-		this.timeText = this.add.text(lineW, lineH, this.timenum + 's', {font: '40px', fill: '#fff'});
+		this.timeText = this.add.text(lineW, lineH, this.timenum + 's', {font: '10px', fill: '#fff'});
 		this.timeText.fixedToCamera = true;
 		// this.timeText.anchor.set(0.5, 0.5);
-		let sp2 = this.add.sprite(bgW, 0, 'score');
+		let sp2 = this.add.sprite(bgW + 20, 10, 'score');
 		sp2.fixedToCamera = true;
-		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '40px', fill: '#fff'});
+		sp2.scale.setTo(.5, .5);
+		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '10px', fill: '#fff'});
 		this.scoreText.fixedToCamera = true;
-		let sp3 = this.add.sprite(bgW * 2, 0, 'point');
+		let sp3 = this.add.sprite(bgW * 2 + 20, 10, 'point');
 		sp3.fixedToCamera = true;
-
-		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '40px', fill: '#fff'});
+		sp3.scale.setTo(.5, .5);
+		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '10px', fill: '#fff'});
 		this.pointText.fixedToCamera = true;
 	}
 
@@ -455,8 +479,8 @@ export default class Game{
 		this.pointText.destroy();
 		this.timenum = 60;
 		this.timeText.destroy();
-		this.BAR_WIDTH = 1050;
-		this.BAR_HEIGHT = 1290;
+		this.BAR_WIDTH = 350;
+		this.BAR_HEIGHT = 430;
 		this.mask.destroy();
 		this.leftBtn.destroy();
 		this.rightBtn.destroy();

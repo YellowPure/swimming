@@ -8,6 +8,9 @@ var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
   pixi = path.join(phaserModule, 'build/custom/pixi.js'),
   p2 = path.join(phaserModule, 'build/custom/p2.js');
 
+var isDev = process.env.NODE_ENV == 'dev';
+var isPro = process.env.NODE_ENV == 'production';
+
 var config = {
 	entry: {
 		app: [
@@ -47,6 +50,10 @@ var config = {
         }
     },
 	plugins: [
+		new webpack.DefinePlugin({
+	      	isDev: isDev,
+	      	isPro: isPro
+	    }),
 		new ExtractTextPlugin("[name].min.css"),
 		new HtmlWebpackPlugin({
 			chunks: ['app'],

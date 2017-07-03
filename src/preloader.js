@@ -3,6 +3,7 @@ export default class Preloader{
 		this.background = null;
 		this.preloaderBar = null;
 		this.ready = false;
+		this.loadingTxt = null;
 	}
 
 	init() {
@@ -19,40 +20,47 @@ export default class Preloader{
 		}
 		this.scale.pageAlignHorizontally = true;
 		this.scale.pageAlignVertically = true;
+
+		this.game.load.onFileComplete.add(this.fileComplete, this);
+	}
+
+	fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+		this.loadingTxt.setText('正在加载...' + progress + '%');
 	}
 
 	preload() {
 		console.log('Preloader preload');
 		//在这里，我们载入了 preloader 所需的资源（一个载入进度条）
-		this.stage.backgroundColor = '#2d2d2d';
+		this.stage.backgroundColor = '#fff';
 		// this.preloadBar = this.add.sprite(this.game.width / 2 - 100, this.game.height / 2, 'preloaderBar');
-		this.add.text(this.game.width / 2, this.game.height / 2 - 30, 'Loading...', {font: '32px monospace', fill: '#fff'}).anchor.setTo(0.5, 0.5);
+		this.loadingTxt = this.add.text(this.game.width / 2, this.game.height / 2 - 30, '正在加载...', {font: '18px', fill: '#999999'});
+		this.loadingTxt.anchor.setTo(0.5, 0.5);
 
 		//这里把 preloadBar 精灵设置为一个载入器精灵。当文件在载入时，他会自动从0 到全长进行裁剪长度
 		// this.load.setPreloadSprite(this.preloadBar);
-
+		const url = isPro == true ? './images/' : './dist/images/';
 		//开始加载游戏所需的剩下的精灵、图片、精灵表、音频文件等
-		this.load.image('point', './dist/images/point_bg.png');
-		this.load.image('score', './dist/images/score_bg.png');
-		this.load.image('time', './dist/images/time_bg.png');
-		this.load.image('bar', './dist/images/bar_bg.png');
-		this.load.image('pop1', './dist/images/pop_1.png');
-		this.load.image('pop2', './dist/images/pop_2.png');
-		this.load.image('one', './dist/images/1.png');
-		this.load.image('two', './dist/images/2.png');
-		this.load.image('three', './dist/images/3.png');
-		this.load.image('go', './dist/images/go.png');
-		this.load.image('red', './dist/images/red.png');
-		this.load.image('btn_return', './dist/images/btn_return.png');
-		this.load.image('bg_1', './dist/images/bg_1.png');
-		this.load.image('bg_2', './dist/images/bg_2.png');
-		this.load.image('bg_3', './dist/images/bg_3.png');
-		this.load.spritesheet('btn_left', './dist/images/btn_left.png', 133, 133);
-		this.load.spritesheet('btn_right', './dist/images/btn_right.png', 133, 133);
-		this.load.spritesheet('btn_up', './dist/images/btn_up.png', 133, 133);
-		this.load.atlas('person', './dist/images/person.png', './dist/images/person.json');
-		this.load.atlas('enemy', './dist/images/enemy.png', './dist/images/enemy.json',);
-		this.load.atlas('hit', './dist/images/hit.png', './dist/images/hit.json',);
+		this.load.image('point', url + 'point_bg.png');
+		this.load.image('score', url + 'score_bg.png');
+		this.load.image('time', url + 'time_bg.png');
+		this.load.image('bar', url + 'bar_bg.png');
+		this.load.image('pop1', url + 'pop_1.png');
+		this.load.image('pop2', url + 'pop_2.png');
+		this.load.image('one', url + '1.png');
+		this.load.image('two', url + '2.png');
+		this.load.image('three', url + '3.png');
+		this.load.image('go', url + 'go.png');
+		this.load.image('red', url + 'red.png');
+		this.load.image('btn_return', url + 'btn_return.png');
+		this.load.image('bg_1', url + 'bg_1.png');
+		this.load.image('bg_2', url + 'bg_2.png');
+		this.load.image('bg_3', url + 'bg_3.png');
+		this.load.spritesheet('btn_left', url + 'btn_left.png', 133, 133);
+		this.load.spritesheet('btn_right', url + 'btn_right.png', 133, 133);
+		this.load.spritesheet('btn_up', url + 'btn_up.png', 133, 133);
+		this.load.atlas('person', url + 'person.png', url + 'person.json');
+		this.load.atlas('enemy', url + 'enemy.png', url + 'enemy.json',);
+		this.load.atlas('hit', url + 'hit.png', url + 'hit.json',);
 		// this.load.audio('explosion', ['assets/explosion.ogg', 'assets/explosion.wav']);
 		// this.load.audio('playerExplosion', ['assets/player-explosion.ogg',
 		// 'assets/player-explosion.wav']);
@@ -63,6 +71,7 @@ export default class Preloader{
 		//当加载完成后，禁止裁剪载入条，因为在音乐解码之后，将进入 update 循环
 		// this.preloadBar.cropEnabled = false;
 		this.state.start('MainMenu');
+		this.loadingTxt.destroy();
 	}
 
 	update() {

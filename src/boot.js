@@ -21,7 +21,7 @@ export default class Boot{
 	preload() {
 		console.log('boot preload');
 		//在这里，我们载入了 preloader 所需的资源（一个载入进度条）
-		this.load.image('preloaderBar', './dist/images/red.png');
+		// this.load.image('preloaderBar', './dist/images/red.png');
 	}
 
 	create() {
