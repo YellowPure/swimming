@@ -2,43 +2,43 @@
 
 {
 	"filename": "1.png",
-	"frame": {"x":60,"y":0,"w":60,"h":158},
+	"frame": {"x":0,"y":0,"w":200,"h":322},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":158},
-	"sourceSize": {"w":60,"h":158}
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":322},
+	"sourceSize": {"w":200,"h":322}
 },
 {
 	"filename": "2.png",
-	"frame": {"x":0,"y":304,"w":73,"h":146},
+	"frame": {"x":0,"y":322,"w":200,"h":322},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":146},
-	"sourceSize": {"w":73,"h":146}
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":322},
+	"sourceSize": {"w":200,"h":322}
 },
 {
 	"filename": "3.png",
-	"frame": {"x":0,"y":0,"w":60,"h":158},
+	"frame": {"x":0,"y":644,"w":200,"h":322},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":158},
-	"sourceSize": {"w":60,"h":158}
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":322},
+	"sourceSize": {"w":200,"h":322}
 },
 {
 	"filename": "4.png",
-	"frame": {"x":0,"y":158,"w":73,"h":146},
+	"frame": {"x":0,"y":966,"w":200,"h":322},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":146},
-	"sourceSize": {"w":73,"h":146}
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":322},
+	"sourceSize": {"w":200,"h":322}
 }],
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "person.png",
 	"format": "RGBA8888",
-	"size": {"w":120,"h":450},
+	"size": {"w":200,"h":1288},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0c595660d6d7340e5553e8d6c0472079:c3defcb0c36f436cc892b184633a8dc4:0f05216b91dca4a5cb4ffec69e53abd2$"
+	"smartupdate": "$TexturePacker:SmartUpdate:92f351407b12681000b49b2e8a1d394d:b03e1b96104092d1a3b19b7df8443a85:0f05216b91dca4a5cb4ffec69e53abd2$"
 }
 }

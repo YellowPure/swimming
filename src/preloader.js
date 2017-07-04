@@ -55,6 +55,13 @@ export default class Preloader{
 		this.load.image('bg_1', url + 'bg_1.png');
 		this.load.image('bg_2', url + 'bg_2.png');
 		this.load.image('bg_3', url + 'bg_3.png');
+		this.load.image('rule_btn', url + 'rule_btn.png');
+		this.load.image('record_btn', url + 'record_btn.png');
+		this.load.image('self_btn', url + 'self_btn.png');
+		this.load.image('team_btn', url + 'team_btn.png');
+		this.load.image('main', url + 'main.png');
+		this.load.image('report', url + 'report.png');
+		this.load.image('bridge', url + 'bridge.png');
 		this.load.spritesheet('btn_left', url + 'btn_left.png', 133, 133);
 		this.load.spritesheet('btn_right', url + 'btn_right.png', 133, 133);
 		this.load.spritesheet('btn_up', url + 'btn_up.png', 133, 133);

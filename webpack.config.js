@@ -69,21 +69,21 @@ var config = {
 }
 
 if(process.env.NODE_ENV == 'production') {
-	config.plugins.push(
-		new webpack.optimize.UglifyJsPlugin({
-            // 删除所有的注释
-            comments: false,
-            // 在UglifyJs删除没有用到的代码时不输出警告
-            compress: {
-                warnings: false
-            },
-            // 删除所有的 `console` 语句
-            // 还可以兼容ie浏览器
-            drop_console: true,
-            minimize: true,
-            except: ['$super', '$', 'exports', 'require']
-        })
-	);
+	// config.plugins.push(
+	// 	new webpack.optimize.UglifyJsPlugin({
+    //         // 删除所有的注释
+    //         comments: false,
+    //         // 在UglifyJs删除没有用到的代码时不输出警告
+    //         compress: {
+    //             warnings: false
+    //         },
+    //         // 删除所有的 `console` 语句
+    //         // 还可以兼容ie浏览器
+    //         drop_console: true,
+    //         minimize: true,
+    //         except: ['$super', '$', 'exports', 'require']
+    //     })
+	// );
 }
 
 module.exports = config;
