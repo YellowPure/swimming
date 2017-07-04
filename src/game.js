@@ -405,6 +405,10 @@ export default class Game{
 	setupPlayer() {
 		this.player = this.add.sprite(this.load2, this.game.world.height - 240, 'person');
 		this.player.scale.setTo(.5, .5);
+		let txt = this.game.make.text(this.player.width - 20, -50, '玩家', {font: '28px', fill: '#f00'});
+		let arrow = this.game.make.sprite(this.player.width - 6, -10, 'red');
+		this.player.addChild(txt);
+		this.player.addChild(arrow);
 		// this.player.scale.setTo(2, 2);
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		// this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -501,9 +505,3 @@ export default class Game{
 	}
 
 }
-
-// class Player extends Phaser.Sprite{
-// 	constructor() {
-// 		let cir = new Phaser.Circle(0, 0, 30);
-// 	}
-// }
