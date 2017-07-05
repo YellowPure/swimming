@@ -1,4 +1,6 @@
 import { showDialog5 } from './dialogs.js';
+import { guide1 } from './guide.js';
+import { createTeam } from './createTeam.js';
 import {getX, getY} from './util.js';
 
 export default class MainMenu{
@@ -43,6 +45,7 @@ export default class MainMenu{
 		
 		this.sfBtn = this.add.button(this.game.width - 150, this.game.height - 90, 'self_btn', this.startGame, this);
 		this.sfBtn.scale.setTo(.5, .5);
+		createTeam();
 	}
 
 	update() {

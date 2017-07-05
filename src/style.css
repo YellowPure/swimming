@@ -31,7 +31,117 @@ body {
 	margin-right: -1px;
 }
 #dialog {
-	width: 300px;
-	height: 200px;
-	background-color: #fff;
+
+}
+
+.guide {
+	background: url(./images/guide_bg.png) 0 0 no-repeat;
+	background-size: 295px 326px;
+	width: 295px;
+	height: 241px;
+	position: relative;
+	padding-top: 85px;
+}
+.guide1, .guide2, .guide3 {
+	background: url(./images/guide1.png) 0 0 no-repeat;
+	background-size: 243px 211px;
+	width: 243px;
+	height: 211px;
+	margin: 0 auto;
+}
+.long-btn {
+	position: absolute;
+	display: block;
+	width: 274px;
+	height: 35px;
+	background: url(./images/next_btn2.png) 0 0 no-repeat;
+	background-size: 274px 35px;
+	left: 10px;
+	bottom: -30px;
+}
+.prev-btn, .prev-btn2 {
+	position: absolute;
+	display: block;
+	width: 118px;
+	height: 35px;
+	background: url(./images/prev_btn.png) 0 0 no-repeat;
+	background-size: 118px 35px;
+	left: 10px;
+	bottom: -30px;
+}
+.next-btn, .next-btn2 {
+	position: absolute;
+	display: block;
+	width: 118px;
+	height: 35px;
+	background: url(./images/next_btn.png) 0 0 no-repeat;
+	background-size: 118px 35px;
+	right: 10px;
+	bottom: -30px;
+}
+.next-btn2 {
+	background-image: url(./images/enter_btn.png);
+}
+.guide2 {
+	background-image: url(./images/guide2.png);
+}
+.guide3 {
+	background-image: url(./images/guide3.png);
+}
+.create-team {
+	background: url(./images/create_bg1.png) center top no-repeat;
+	background-size: 321px 405px;
+	width: 321px;
+	height: 405px;
+	position: relative;
+}
+.close {
+	width: 23px;
+	height: 23px;
+	background: url(./images/close_btn.png) center top no-repeat;
+	background-size: 23px 23px;
+	display: block;
+	position: absolute;
+	right: 17px;
+	top: 8px;
+}
+.input-name, .input-num {
+	background: none;
+	border: none;
+	position: absolute;
+	width: 133px;
+	height: 25px;
+	left: 128px;
+	top: 81px;
+}
+.input-num {
+	top: 121px;
+}
+.textarea-address {
+	position: absolute;
+	display: block;
+	width: 223px;
+	height: 80px;
+	left: 50px;
+	top: 200px;
+	border: none;
+	background: none;
+}
+.address-add {
+	background: url(./images/add_btn.png) center center no-repeat;
+	background-size: 72px 37px;
+
+}
+.submit {
+	width: 231px;
+	height: 38px;
+	display: block;
+	background: url(./images/confirm_btn.png) center center no-repeat;
+	background-size: 231px 38px;
+	position: absolute;
+	left: 50px;
+	top: 300px;
+}
+.submit.grey {
+	background-image: url(./images/confirm_grey.png);
 }

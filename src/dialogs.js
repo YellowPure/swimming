@@ -6,17 +6,17 @@ const overlay = $('#overlay');
  * @return {[type]}      [description]
  */
 
-dialog.on('click', '.close', () => {
-	if(!overlay.is(':hidden')) {
-		overlay.hide();
-	}
-});
+// dialog.on('click', '.close', () => {
+// 	if(!overlay.is(':hidden')) {
+// 		overlay.hide();
+// 	}
+// });
 
-dialog.on('click', '.create', () => {
-	if(!overlay.is(':hidden')) {
-		overlay.hide();
-	}
-});
+// dialog.on('click', '.create', () => {
+// 	if(!overlay.is(':hidden')) {
+// 		overlay.hide();
+// 	}
+// });
 
 const showDialog1 = (type) => {
 	let title = '';
