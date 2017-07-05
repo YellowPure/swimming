@@ -38,7 +38,7 @@ export default class Preloader{
 
 		//这里把 preloadBar 精灵设置为一个载入器精灵。当文件在载入时，他会自动从0 到全长进行裁剪长度
 		// this.load.setPreloadSprite(this.preloadBar);
-		const url = isPro == true ? './images/' : './dist/images/';
+		const url = window.gamedata.imgUrl;
 		//开始加载游戏所需的剩下的精灵、图片、精灵表、音频文件等
 		this.load.image('point', url + 'point_bg.png');
 		this.load.image('score', url + 'score_bg.png');

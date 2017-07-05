@@ -116,8 +116,6 @@ export default class Game{
 		// 检测碰撞、生成敌人、开火、响应玩家输入，任何东西都可以放在这里
 		this.checkCollisions();
 		this.checkOverEnemy();
-		// this.spawnEnemies();
-		// this.processPlayserInput();
 		// this.time++;
 	}
 
@@ -125,6 +123,12 @@ export default class Game{
 		if (!this.isstart) return;
 		this.enemyPool.forEachAlive((child) => {
 			child.body.velocity.y = -this.BASIC_SPEED;
+			// console.log(child.y, child.body.y);
+			if(child.y < 200) {
+				child.alive = false;
+				child.destroy();
+			}
+			// debugger;
 		});
 		// this.enemyPool.y -=2;
 	}
@@ -135,7 +139,7 @@ export default class Game{
 	checkOverEnemy() {
 		this.enemyPool.forEachAlive((child) => {
 			if(this.player.body.y < child.body.y) {
-				this.score++;
+				this.score += window.initGame.exceedCount;
 				this.scoreText.text = this.score + '楼币';
 				child.alive = false;
 			}
@@ -155,7 +159,7 @@ export default class Game{
 		let speed = this.acceleration + this.BASIC_SPEED;
 		if(Math.abs(this.curtime - Date.now()) > 1000) {
 			this.curtime = Date.now();
-			this.acceleration = 0;
+			// this.acceleration = 0;
 			this.updatePoint();
 		}
 		// this.game.physics.arcade.moveToXY(this.player, 0, this.player.body.y - this.game.world.height / 60, 60, 1000 );
@@ -280,22 +284,17 @@ export default class Game{
 		this.player.animations.add('hit');
 		this.player.animations.play('hit', 5, true);
 		// this.player.body.velocity.y = 0;
+		this.acceleration = 0;
 		setTimeout(() => {
 			this.isCollisions = false;
 			this.player.loadTexture('person');
 			this.player.animations.play('run', 5, true);
+			// this.player.body.velocity.y = -this.BASIC_SPEED;
 		}, 2000);
 	}
 
-	spawnEnemies() {
-
-	}
-
-	processPlayserInput() {
-		
-	}
-
 	showEndPanel() {
+		window.gamedata.addGameLog();
 		console.log('showEndPanel' , this.clickcount);
 		let texture = this.completeSwim == true ? 'pop2' : 'pop1';
 		this.game.time.events.remove(this.timeEvent);
@@ -306,6 +305,8 @@ export default class Game{
 
 		this.player.destroy();
 		this.enemyPool.destroy();
+
+		this.pointText.text = window.gamedata.total + '米';
 
 		this.endPanel.addChild(this.game.make.text(this.endPanel.width , this.endPanel.height + 20, this.point, {font: '28px', fill: '#f00'}));
 		this.endPanel.addChild(this.game.make.text(this.endPanel.width, this.endPanel.height + 70, this.score, {font: '28px', fill: '#f00'}));
@@ -374,8 +375,8 @@ export default class Game{
 	}
 
 	onLeftHandler() {
-		console.log('to left');
-		if(this.istween == true) return;
+		// console.log('to left');
+		if(this.istween == true || this.isCollisions == true) return;
 		this.curload--;
 
 		if(this.curload < 1) {
@@ -386,7 +387,7 @@ export default class Game{
 
 	onRightHandler() {
 		console.log('to right');
-		if(this.istween == true) return;
+		if(this.istween == true || this.isCollisions == true) return;
 		this.curload++;
 
 		if(this.curload > 3) {
@@ -419,8 +420,9 @@ export default class Game{
 	setupEnemies() {
 		this.enemyPool = this.game.add.group();
 		this.enemyPool.enableBody = true;
+		let enemyLen = window.initGame.limitCount;
 
-		for(let i = 0; i < window.gamedata.enemy; i++) {
+		for(let i = 0; i < enemyLen; i++) {
 			let x, y, ran = Math.floor(Math.random() * 3);
 			if(ran == 0) {
 				x = this.load1;
@@ -430,7 +432,7 @@ export default class Game{
 				x = this.load3;
 			}
 			// y = Math.floor(Math.random() * this.game.world.height);
-			y = this.randomPos(window.gamedata.enemy, i, this.game.world.height);
+			y = this.randomPos(enemyLen, i, this.game.world.height);
 			let enemy = this.enemyPool.create(x, y, 'enemy');
 			enemy.scale.setTo(.5, .5);
 			// enemy.scale.setTo(2, 2);
@@ -440,8 +442,8 @@ export default class Game{
 	}
 
 	randomPos(len, index, totalHeight) {
-		console.log(index * totalHeight / len);
-		return index * totalHeight / len;
+		// console.log(index * totalHeight / len);
+		return index * (totalHeight - 200) / len;
 		// let maxLen = Math.min(len, Math.floor(totalHeight / height));
 		// let arr = Array.from({length: maxLen});
 	}

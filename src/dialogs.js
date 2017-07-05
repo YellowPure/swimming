@@ -1,3 +1,4 @@
+import {createTeam} from './createTeam.js';
 const dialog = $('#dialog');
 const overlay = $('#overlay');
 /**
@@ -6,7 +7,13 @@ const overlay = $('#overlay');
  * @return {[type]}      [description]
  */
 
-dialog.on('click', '.close', () => {
+dialog.on('click', '.know', () => {
+	if(!overlay.is(':hidden')) {
+		overlay.hide();
+	}
+});
+
+dialog.on('click', '.wait', () => {
 	if(!overlay.is(':hidden')) {
 		overlay.hide();
 	}
@@ -16,28 +23,31 @@ dialog.on('click', '.create', () => {
 	if(!overlay.is(':hidden')) {
 		overlay.hide();
 	}
+	createTeam();
 });
 
-const showDialog1 = (type) => {
+const showDialog1 = (type = 1) => {
 	let title = '';
 	if (type == 1) {
-		title = '游戏未开始';
+		title = 'no-start';
 	} else if(type == 2) {
-		title = '游戏已结束';
+		title = 'end';
 	}
 	let str = `
-		<h3>${title}</h3>
-		<div>
-		<p>开放时间
-		<br />
-		2017.12.12 12:00
-		<br />
-		至
-		<br />
-		2017.12.12 12:01
-		</p>
-		<button class='close'>知道了</button>
+		<div class='${title}'>
+			<div>
+			<p>开放时间
+			<br />
+			${window.initGame.gameBeginTime}
+			<br />
+			至
+			<br />
+			${window.initGame.gameEndTime}
+			</p>
+			<span class='know'></span>
+			</div>
 		</div>
+		
 	`;
 	dialog.html(str);
 	if(overlay.is(':hidden')) {
@@ -45,15 +55,41 @@ const showDialog1 = (type) => {
 	}
 }
 
-const showDialog2 = () => {
+const showDialog2 = (type='person') => {
+	let count = type == 'person' ? window.initGame.personalCount: window.initGame.teamCount;
 	let str = `
-		<h3>无法开始</h3>
-		<div>
-		<p>每天有3次机会，今天您已经玩了3次了，明天再来吧！</p>
-		<button class='close'>知道了</button>
+		<div class='cannot'>
+			<span class='total'>3</span>
+			<span class='cur'>${count}</span>
+			<span class='know'></span>
 		</div>
 	`;
 	dialog.html(str);
+	if(overlay.is(':hidden')) {
+		overlay.show();
+	}
+}
+/**
+ * 
+ * @param {*} type 1 没团队 2 踢出
+ */
+const showDialog3 = (type = 1) => {
+	let str, title;
+	if (type == 1) {
+		str = 'no-create';
+		title = '';
+	} else if(type == 2) {
+		str = 'out-team';
+		title = `${window.initTeam.teamName}`;
+	}	
+	let txt = `
+		<div class='${str}'>
+			<span class='team-name'>${title}</span>
+			<span class='wait'></span>
+			<span class='create'></span>
+		</div>
+	`;
+	dialog.html(txt);
 	if(overlay.is(':hidden')) {
 		overlay.show();
 	}

@@ -1,5 +1,8 @@
-import { showDialog5 } from './dialogs.js';
+import { showDialog1, showDialog2,showDialog3, showDialog5 } from './dialogs.js';
+import { guide1 } from './guide.js';
+import { createTeam, createSuccess } from './createTeam.js';
 import {getX, getY} from './util.js';
+import Control from './control.js';
 
 export default class MainMenu{
 	constructor(game) {
@@ -41,8 +44,12 @@ export default class MainMenu{
 		this.bridge.scale.setTo(.5, .5);
 
 		
-		this.sfBtn = this.add.button(this.game.width - 150, this.game.height - 90, 'self_btn', this.startGame, this);
+		this.sfBtn = this.add.button(this.game.width - 150, this.game.height - 90, 'self_btn', this.click1, this);
 		this.sfBtn.scale.setTo(.5, .5);
+
+		this.tBtn = this.add.button(0, this.game.height - 90, 'team_btn', this.click2, this);
+		this.tBtn.scale.setTo(.5, .5);
+		// createSuccess();
 	}
 
 	update() {
@@ -58,8 +65,23 @@ export default class MainMenu{
 		// }
 	}
 
+	click1() {
+		window.gamedata.swingType = 'person';
+		let res = Control.control('person');
+		if(res == true) {
+			this.startGame();
+		}
+	}
+
+	click2() {
+		window.gamedata.swingType = 'team';
+		let res = Control.control('team');
+		if(res == true) {
+			this.startGame();
+		}
+	}
+
 	startGame() {
-		// this.music.stop();
 		this.state.start('Game');
 	}
 }
