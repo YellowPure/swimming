@@ -14,13 +14,14 @@ var isPro = process.env.NODE_ENV == 'production';
 var config = {
 	entry: {
 		app: [
-			'webpack-dev-server/client?http://localhost:8080/dist/',
+			// 'webpack-dev-server/client?http://localhost:8080/dist/',
 			path.resolve(__dirname, './src/index.js')
 		]
 	},
 	output: {
 		filename: '[name].min.js',
-		path: path.resolve(__dirname, './dist')
+		path: path.resolve(__dirname, './dist/'),
+		publicPath: '/dist/' 
 	},
 	module: {
 		rules: [
@@ -35,9 +36,7 @@ var config = {
 			{ test: /\.js$/, loader: 'babel-loader?cacheDirectory', exclude: /node_modules/ },
 			{
 				test: /\.(png|svg|jpg|gif)$/,
-				use: [
-					'file-loader'
-				],
+				loader: 'url-loader?limit=0&name=images/[name].[ext]',
 				exclude: /node_modules/
 			}
 		]
@@ -49,11 +48,20 @@ var config = {
             'p2': p2,
         }
     },
+	externals: {
+        jquery: 'window.$'
+    },
 	plugins: [
 		new webpack.DefinePlugin({
 	      	isDev: isDev,
 	      	isPro: isPro
 	    }),
+		// 全局jquery（可以为外部依赖）
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
 		new ExtractTextPlugin("[name].min.css"),
 		new HtmlWebpackPlugin({
 			chunks: ['app'],

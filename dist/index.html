@@ -7,12 +7,12 @@
 	<title>swimming</title>
 	<script>
 		window.gamedata = {
-			speed: 80,
+			speed: 8,
 			total: 1158, // 
 			clickWin: 160, // 点击获胜次数
-			enemy: 20 // 障碍物数量
 		};
-		window.gamedata.imgUrl = './images/';
+		// 配置游戏内资源地址
+		window.gamedata.imgUrl = './dist/images/';
 		/**
 		 * 团队排名
 		 * @type {Array}
@@ -31,17 +31,19 @@
 		];
 
 		window.initGame = { 
-			"teamState": 1,  //在团队的状态1在2踢出3退出
-			"isTeam": 1, //是否加入团队1未加入2加入
+			"teamState": 2,  //在团队的状态1在2踢出3退出
+			"isTeam": 2, //是否加入团队1未加入2加入
 			"gameState": 1,  //是否首次游戏1否2是
 			"personalCount": 3,  //个人游戏次数
-			"teamCount": 3, //团队游戏次数
+			"teamCount": 2, //团队游戏次数
 			"exceedCount": 1,  //超过障碍物奖
 			"limitCount": 50, //障碍物上限
 			"count": 193, //通关点击数
 			"gameBeginTime": "2017-03-12 08:12:21", //游戏开始时间
 			"gameEndTime": "2017-03-12 08:50:21" //游戏结束时间
 		};
+
+		window.gamedata.swingType = '';
 
 		window.initTeam = {
 			"teamId":1, //团队id
@@ -50,18 +52,22 @@
 			"teamAddress":"收货人：王辉电话：15527038470地址：湖北省恩施州巴东县港务局宿舍8号" //收货地址
 		};
 
-		window.gamedata.addGameLog = function(data) {
-			console.log(data);
-			// 提交数据接口
-		};
-
 		window.gamedata.personalGameLog = function(data) {
 			console.log(data);
 			// 提交数据接口
 		}
 
+		window.gamedata.updateFristGameState = function() {
+			console.log('window.gamedata.updateFristGameState');
+		}
+
+		window.gamedata.addGameLog = function() {
+			console.log('addGameLog');
+			// 提交数据接口
+		}
+
 	</script>
-<link href="app.min.css" rel="stylesheet"></head>
+<link href="/dist/app.min.css" rel="stylesheet"></head>
 
 <body>
 	<div id="app"></div>
@@ -70,6 +76,6 @@
 		<span class="help-span"></span>
 	</div>
 	<script type="text/javascript" src="./dist/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="app.min.js"></script></body>
+<script type="text/javascript" src="/dist/app.min.js"></script></body>
 
 </html>
