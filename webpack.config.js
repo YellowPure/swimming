@@ -36,7 +36,7 @@ var config = {
 			{ test: /\.js$/, loader: 'babel-loader?cacheDirectory', exclude: /node_modules/ },
 			{
 				test: /\.(png|svg|jpg|gif)$/,
-				loader: 'url-loader?limit=0&name=images/[name].[ext]',
+				loader: 'url-loader?limit=1&name=images/[name].[ext]',
 				exclude: /node_modules/
 			}
 		]
@@ -74,6 +74,10 @@ var config = {
             }
 		})
 	],
+	devServer: {
+		port: '8888',
+        disableHostCheck: true
+	}
 }
 
 if(process.env.NODE_ENV == 'production') {

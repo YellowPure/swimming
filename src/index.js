@@ -9,10 +9,11 @@ import MainMenu from './mainmenu';
 import Game from './game';
 // import End from './end';
 import Data from './data';
+import Control from './control.js';
 
 class App {
 	constructor() {
-		let game = new Phaser.Game('100%', '100%', Phaser.CANVAS, 'app');
+		let game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.AUTO, 'app');
 		let boot = new Boot(game);
 		// alert('test'); 
 		let preloader = new Preloader(game);

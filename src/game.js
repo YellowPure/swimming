@@ -35,7 +35,7 @@ export default class Game{
 		/**
 		 * 游戏倒计时
 		 */
-		this.timenum = 60;
+		this.timenum = 5;
 		this.timeText = null;
 		this.BAR_WIDTH = 350;
 		this.BAR_HEIGHT = 430;
@@ -170,7 +170,7 @@ export default class Game{
 			this.player.body.velocity.y = -speed;
 		}
 
-		if(this.player.body.y <= 200 ) {
+		if(this.player.body.y <= getY(200) ) {
 			this.score = 88;
 			this.point = window.gamedata.total;
 			this.completeSwim = true;
@@ -212,15 +212,16 @@ export default class Game{
 		bmd.fixedToCamera = true;
 		this.mask = this.add.sprite(0, 0, bmd);
 		this.mask.fixedToCamera = true;
-		let bar = this.add.sprite(0, this.game.height - this.BAR_HEIGHT, 'bar');
+		let bar = this.add.sprite(0, this.game.height - getY(this.BAR_HEIGHT), 'bar');
 		bar.width = this.BAR_WIDTH;
 		bar.height = this.BAR_HEIGHT;
+		bar.scale.setTo(2, 2);
 		this.bar = bar;
 		this.bar.fixedToCamera = true;
-		this.countdownSp = this.add.sprite(this.game.width / 2 - 61, this.game.height / 2 - 146, 'three');
+		this.countdownSp = this.add.sprite(this.game.width / 2 - getX(61), this.game.height / 2 - 146, 'three');
 		this.countdownSp.fixedToCamera = true;
 		// this.countdownSp.anchor.setTo(.5, .5);
-		this.countdownSp.scale.setTo(.5, .5);
+		// this.countdownSp.scale.setTo(.5, .5);
 		this.countEvent = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCount, this);
 	}
 
@@ -237,29 +238,30 @@ export default class Game{
 		this.count ++;
 		if(this.count == 1) {
 			this.countdownSp.destroy();
-			this.countdownSp = this.add.sprite(this.game.width / 2 - 35, this.game.height / 2 - 69, 'two');
-			this.countdownSp.scale.setTo(.5, .5);
+			this.countdownSp = this.add.sprite(this.game.width / 2 - getX(70), this.game.height / 2 - getY(69), 'two');
+			this.countdownSp.scale.setTo(2, 2);
 			this.countdownSp.fixedToCamera = true;
 		} else if(this.count == 2) {
 			this.countdownSp.destroy();
-			this.countdownSp = this.add.sprite(this.game.width / 2 - 18, this.game.height / 2 - 72, 'one');
-			this.countdownSp.scale.setTo(.5, .5);
+			this.countdownSp = this.add.sprite(this.game.width / 2 - getX(36), this.game.height / 2 - getY(72), 'one');
+			this.countdownSp.scale.setTo(2, 2);
 			this.countdownSp.fixedToCamera = true;			
 		} else if(this.count ==3) {
 			console.log('start');
 			this.countdownSp.destroy();
-			this.countdownSp = this.add.sprite(this.game.width / 2 - 50, this.game.height / 2 - 65, 'go');
-			this.countdownSp.scale.setTo(.5, .5);
+			this.countdownSp = this.add.sprite(this.game.width / 2 - getX(100), this.game.height / 2 - getY(65), 'go');
+			this.countdownSp.scale.setTo(2, 2);
 			this.countdownSp.fixedToCamera = true;
 		} else if(this.count > 3) {
 			this.mask.destroy();
 			this.countdownSp.destroy();
 			this.countEvent && this.game.time.events.remove(this.countEvent);
-			this.countdownSp.scale.setTo(.5, .5);
+			// this.countdownSp.scale.setTo(.5, .5);
 			this.bar && this.bar.destroy();
 			this.isstart = true;
 			// 开始游戏倒计时
 			this.timeEvent = this.game.time.events.repeat(Phaser.Timer.SECOND, this.timenum,  this.updateTime, this);
+			
 			this.start();
 		}
 	}
@@ -298,19 +300,26 @@ export default class Game{
 		console.log('showEndPanel' , this.clickcount);
 		let texture = this.completeSwim == true ? 'pop2' : 'pop1';
 		this.game.time.events.remove(this.timeEvent);
-
-		this.endPanel = this.add.sprite(this.game.width / 2 - 175, this.game.height / 2 - 162, texture);
+		let bmd = this.add.bitmapData(this.game.width, this.game.height);
+		bmd.ctx.beginPath();
+		bmd.ctx.rect(0, 0, this.game.width, this.game.height);
+		bmd.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+		bmd.ctx.fill();
+		// bmd.fixedToCamera = true;
+		this.mask = this.add.sprite(0, 0, bmd);
+		this.mask.fixedToCamera = true;
+		this.endPanel = this.add.sprite(this.game.width / 2 - getX(175), this.game.height / 2 - getY(162), texture);
 		this.endPanel.fixedToCamera = true;
-		this.endPanel.scale.setTo(.5, .5);
-
+		// this.endPanel.scale.setTo(.5, .5);
+		
 		this.player.destroy();
 		this.enemyPool.destroy();
 
 		this.pointText.text = window.gamedata.total + '米';
 
-		this.endPanel.addChild(this.game.make.text(this.endPanel.width , this.endPanel.height + 20, this.point, {font: '28px', fill: '#f00'}));
-		this.endPanel.addChild(this.game.make.text(this.endPanel.width, this.endPanel.height + 70, this.score, {font: '28px', fill: '#f00'}));
-		this.endPanel.addChild(this.game.make.button(this.endPanel.width - 105, this.endPanel.height + 130, 'btn_return', this.quitGame, this));
+		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2 , this.endPanel.height / 2 + 20, this.point, {font: '32px', fill: '#f00', align: 'center'}));
+		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2, this.endPanel.height / 2 + 70, this.score, {font: '32px', fill: '#f00', align: 'center'}));
+		this.endPanel.addChild(this.game.make.button(this.endPanel.width /2 - 105, this.endPanel.height / 2 + 130, 'btn_return', this.quitGame, this));
 		// this.quitGame();
 	}
 
@@ -333,20 +342,21 @@ export default class Game{
 	}
 
 	setupCtrl() {
-		this.leftBtn = this.add.button(30, this.game.height - 75, 'btn_left', this.onLeftHandler, this, 0, 0, 1);
+		this.leftBtn = this.add.button(30, this.game.height - getY(75), 'btn_left', this.onLeftHandler, this, 0, 0, 1);
 		this.leftBtn.fixedToCamera = true;
 
-		this.rightBtn = this.add.button(this.game.width - 90, this.game.height - 75, 'btn_right', this.onRightHandler, this, 0, 0, 1);
+		this.rightBtn = this.add.button(this.game.width - getX(90), this.game.height - getY(75), 'btn_right', this.onRightHandler, this, 0, 0, 1);
 		this.rightBtn.fixedToCamera = true;
-		this.upBtn = this.add.button(this.game.world.centerX - 28 , this.game.height - 90, 'btn_up', this.onUpHandler, this, 0, 0, 1);
+		this.upBtn = this.add.button(this.game.world.centerX - getX(28) , this.game.height - getY(90), 'btn_up', this.onUpHandler, this, 0, 0, 1);
 		this.upBtn.fixedToCamera = true;
 
-		this.leftBtn.scale.setTo(.5, .5);
-		this.upBtn.scale.setTo(.5, .5);
-		this.rightBtn.scale.setTo(.5, .5);
+		// this.leftBtn.scale.setTo(.5, .5);
+		// this.upBtn.scale.setTo(.5, .5);
+		// this.rightBtn.scale.setTo(.5, .5);
 	}
 
 	start() {
+		
 		let anim = this.player.animations.add('run');
 		anim.play(5, true);
 		// let eAnim = this.enemyPool.animations.add('run');
@@ -404,10 +414,10 @@ export default class Game{
 	}
 
 	setupPlayer() {
-		this.player = this.add.sprite(this.load2, this.game.world.height - 240, 'person');
-		this.player.scale.setTo(.5, .5);
-		let txt = this.game.make.text(this.player.width - 20, -50, '玩家', {font: '28px', fill: '#f00'});
-		let arrow = this.game.make.sprite(this.player.width - 6, -10, 'red');
+		this.player = this.add.sprite(this.load2, this.game.world.height - getY(240), 'person');
+		// this.player.scale.setTo(.5, .5);
+		let txt = this.game.make.text(this.player.width / 2 - getX(10), getY(-50), '玩家', {font: '28px', fill: '#f00', align: 'center'});
+		let arrow = this.game.make.sprite(this.player.width /2 - getX(6), getY(-30), 'red');
 		this.player.addChild(txt);
 		this.player.addChild(arrow);
 		// this.player.scale.setTo(2, 2);
@@ -434,7 +444,7 @@ export default class Game{
 			// y = Math.floor(Math.random() * this.game.world.height);
 			y = this.randomPos(enemyLen, i, this.game.world.height);
 			let enemy = this.enemyPool.create(x, y, 'enemy');
-			enemy.scale.setTo(.5, .5);
+			// enemy.scale.setTo(.5, .5);
 			// enemy.scale.setTo(2, 2);
 			// enemy.body.setCollisionGroup(this.enemyCollisionGroup);
 			// enemy.body.collides([this.playerCollisionGroup]);
@@ -443,31 +453,31 @@ export default class Game{
 
 	randomPos(len, index, totalHeight) {
 		// console.log(index * totalHeight / len);
-		return index * (totalHeight - 200) / len;
+		return index * (totalHeight - getY(200)) / len;
 		// let maxLen = Math.min(len, Math.floor(totalHeight / height));
 		// let arr = Array.from({length: maxLen});
 	}
 
 	setupText() {
-		let bgW = 80;
-		let lineH = 17;
-		let lineW = 55;
-		let sp1 = this.add.sprite(20, 10, 'time');
-		sp1.scale.setTo(.5, .5);
+		let bgW = getX(80);
+		let lineH = getY(15);
+		let lineW = getX(55);
+		let sp1 = this.add.sprite(getX(20), getY(10), 'time');
+		// sp1.scale.setTo(.5, .5);
 		// sp1.scale.setTo(1.5, 1.5);
 		sp1.fixedToCamera = true;
-		this.timeText = this.add.text(lineW, lineH, this.timenum + 's', {font: '10px', fill: '#fff'});
+		this.timeText = this.add.text(lineW, lineH, this.timenum + 's', {font: '28px', fill: '#fff'});
 		this.timeText.fixedToCamera = true;
 		// this.timeText.anchor.set(0.5, 0.5);
-		let sp2 = this.add.sprite(bgW + 20, 10, 'score');
+		let sp2 = this.add.sprite(bgW + getX(20), getY(10), 'score');
 		sp2.fixedToCamera = true;
-		sp2.scale.setTo(.5, .5);
-		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '10px', fill: '#fff'});
+		// sp2.scale.setTo(.5, .5);
+		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '28px', fill: '#fff'});
 		this.scoreText.fixedToCamera = true;
-		let sp3 = this.add.sprite(bgW * 2 + 20, 10, 'point');
+		let sp3 = this.add.sprite(bgW * 2 + getX(20), getY(10), 'point');
 		sp3.fixedToCamera = true;
-		sp3.scale.setTo(.5, .5);
-		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '10px', fill: '#fff'});
+		// sp3.scale.setTo(.5, .5);
+		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '28px', fill: '#fff'});
 		this.pointText.fixedToCamera = true;
 	}
 
@@ -503,7 +513,8 @@ export default class Game{
 		this.endPanel.destroy();
 		this.endPanel = null;
 
-		this.state.start('MainMenu');
+		this.state.start('Boot');
+
 	}
 
 }

@@ -17,6 +17,8 @@ export default class MainMenu{
 		this.rankdata = null;
 		this.displayGroup = null;
 		this.sfBtn = null;
+
+		this.controlState1 = false;
 	}
 
 	create() {
@@ -26,30 +28,40 @@ export default class MainMenu{
 		let bg = this.add.sprite(0, 0,  'main');
 		bg.width = window.innerWidth;
 		bg.height = window.innerHeight;
+		bg.scale.setTo(2, 2);
 		// this.loadingText = this.add.text(this.game.width / 2, this.game.height / 2 - 80, '开始游戏', { font: '50px', fill: '#fff'});
 		// this.loadingText.anchor.setTo(.5, .5);
 		// this.rankdata = window.test_rank;
 		this.displayGroup = this.game.add.group();
 
-
+		let ys = [];
 		for(let i = 0;i < 4; i++) {
 			let y = Math.floor(getY(200) + i * getY(400) / 4);
+			ys.push(y);
+		}
+
+		while(ys.length > 0) {
+			let i = Math.floor(Math.random() * ys.length);
 			let data = window.test_rank[i];
-			let person = this.displayGroup.create(this.game.width + i * getX(85), y, 'report');
+			console.log(data);
+			let person = this.displayGroup.create(this.game.width + i * getX(85), ys[i], 'report');
 			let text = this.make.text(110, 2, data.teamName + '游出' + data.totalAchievement + '米', { font: '22px', fill: '#fff'});
 			person.addChild(text);
-			person.scale.setTo(.5, .5);
+			ys.splice(i, 1);
 		}
-		this.bridge = this.add.sprite(0, getY(180), 'bridge');
-		this.bridge.scale.setTo(.5, .5);
 
-		
-		this.sfBtn = this.add.button(this.game.width - 150, this.game.height - 90, 'self_btn', this.click1, this);
-		this.sfBtn.scale.setTo(.5, .5);
+		// for(let i = 0;i < 4; i++) {
+		// 	let y = Math.floor(getY(200) + i * getY(400) / 4);
 
-		this.tBtn = this.add.button(0, this.game.height - 90, 'team_btn', this.click2, this);
-		this.tBtn.scale.setTo(.5, .5);
+			
+		// }
+		this.bridge = this.add.sprite(0, getY(170), 'bridge');
+
+		this.sfBtn = this.add.button(this.game.width - getY(150), this.game.height - getY(90), 'self_btn', this.click1, this);
+
+		this.tBtn = this.add.button(0, this.game.height - getY(90), 'team_btn', this.click2, this);
 		// createSuccess();
+		this.controlState1 = Control.init();
 	}
 
 	update() {
@@ -67,6 +79,9 @@ export default class MainMenu{
 
 	click1() {
 		window.gamedata.swingType = 'person';
+		if(this.controlState1 == false) {
+			Control.init();
+		}
 		let res = Control.control('person');
 		if(res == true) {
 			this.startGame();
@@ -75,6 +90,9 @@ export default class MainMenu{
 
 	click2() {
 		window.gamedata.swingType = 'team';
+		if(this.controlState1 == false) {
+			Control.init();
+		}
 		let res = Control.control('team');
 		if(res == true) {
 			this.startGame();

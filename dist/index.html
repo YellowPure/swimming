@@ -3,16 +3,15 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 	<title>swimming</title>
 	<script>
 		window.gamedata = {
-			speed: 8,
-			total: 1158, // 
-			clickWin: 160, // 点击获胜次数
+			speed: 8, // 设置人物点击一次增加速度
+			total: 1158, // 总距离
 		};
 		// 配置游戏内资源地址
-		window.gamedata.imgUrl = './dist/images/';
+		window.gamedata.imgUrl = './images/';
 		/**
 		 * 团队排名
 		 * @type {Array}
@@ -29,22 +28,22 @@
 			{ "ranking": 9, "totalAchievement": 2000, "teamName": "团队测试9" },
 			{ "ranking": 10, "totalAchievement": 1000, "teamName": "团队测试10" }
 		];
-
+		// 初始游戏信息
 		window.initGame = { 
-			"teamState": 2,  //在团队的状态1在2踢出3退出
-			"isTeam": 2, //是否加入团队1未加入2加入
+			"teamState": 3,  //在团队的状态1在2踢出3退出
+			"isTeam": 1, //是否加入团队1未加入2加入
 			"gameState": 1,  //是否首次游戏1否2是
-			"personalCount": 3,  //个人游戏次数
+			"personalCount": 1,  //个人游戏次数
 			"teamCount": 2, //团队游戏次数
 			"exceedCount": 1,  //超过障碍物奖
 			"limitCount": 50, //障碍物上限
 			"count": 193, //通关点击数
-			"gameBeginTime": "2017-03-12 08:12:21", //游戏开始时间
-			"gameEndTime": "2017-03-12 08:50:21" //游戏结束时间
+			"gameBeginTime": "2017-07-06 08:12:21", //游戏开始时间
+			"gameEndTime": "2017-07-17 08:50:21" //游戏结束时间
 		};
 
 		window.gamedata.swingType = '';
-
+		// 初始团队信息
 		window.initTeam = {
 			"teamId":1, //团队id
 			"teamCode":"10001", //团队编号
@@ -57,10 +56,11 @@
 			// 提交数据接口
 		}
 
+		// 出现新手引导后更新状态的回调函数
 		window.gamedata.updateFristGameState = function() {
 			console.log('window.gamedata.updateFristGameState');
 		}
-
+		// 游戏完成后的添加游戏记录回调函数
 		window.gamedata.addGameLog = function() {
 			console.log('addGameLog');
 			// 提交数据接口
@@ -75,7 +75,7 @@
 		<div id="dialog"></div>
 		<span class="help-span"></span>
 	</div>
-	<script type="text/javascript" src="./dist/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="/dist/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="/dist/app.min.js"></script></body>
 
 </html>

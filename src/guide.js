@@ -26,7 +26,7 @@ dialog.on('click', '.next-btn2', () => {
 	if(!overlay.is(':hidden')) {
 		overlay.hide();
 	}
-	Data.mainMenu.startGame();
+	// Data.mainMenu.startGame();
 });
 
 const guide1 = () => {

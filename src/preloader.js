@@ -9,12 +9,12 @@ export default class Preloader{
 	init() {
 		console.log('Preloader init');
 		this.input.maxPointers = 1;
-		if(!this.game.device.desktop) {
+		if(this.game.device.desktop) {
 
 		} else {
 			//移动设备相关的设置
 			//在这里我们定义了：“缩放游戏，不小于 480x260, 不超过 1024x768”
-			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+			this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
 			this.scale.setMinMax(480, 260, 1024, 768);
 			this.scale.forceLandscape = true;
 		}
@@ -33,7 +33,7 @@ export default class Preloader{
 		//在这里，我们载入了 preloader 所需的资源（一个载入进度条）
 		this.stage.backgroundColor = '#fff';
 		// this.preloadBar = this.add.sprite(this.game.width / 2 - 100, this.game.height / 2, 'preloaderBar');
-		this.loadingTxt = this.add.text(this.game.width / 2, this.game.height / 2 - 30, '正在加载...', {font: '18px', fill: '#999999'});
+		this.loadingTxt = this.add.text(this.game.width / 2, this.game.height / 2 - 30, '正在加载...', {font: '36px', fill: '#666'});
 		this.loadingTxt.anchor.setTo(0.5, 0.5);
 
 		//这里把 preloadBar 精灵设置为一个载入器精灵。当文件在载入时，他会自动从0 到全长进行裁剪长度
