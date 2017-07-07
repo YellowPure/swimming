@@ -50,12 +50,9 @@ export default class MainMenu{
 			ys.splice(i, 1);
 		}
 
-		// for(let i = 0;i < 4; i++) {
-		// 	let y = Math.floor(getY(200) + i * getY(400) / 4);
 
-			
-		// }
 		this.bridge = this.add.sprite(0, getY(170), 'bridge');
+		this.add.sprite(0, this.game.height - getY(75), 'grass');
 
 		this.sfBtn = this.add.button(this.game.width - getY(150), this.game.height - getY(90), 'self_btn', this.click1, this);
 

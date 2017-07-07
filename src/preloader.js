@@ -60,6 +60,7 @@ export default class Preloader{
 		this.load.image('self_btn', url + 'self_btn.png');
 		this.load.image('team_btn', url + 'team_btn.png');
 		this.load.image('main', url + 'main.png');
+		this.load.image('grass', url + 'grass.png');
 		this.load.image('report', url + 'report.png');
 		this.load.image('bridge', url + 'bridge.png');
 		this.load.spritesheet('btn_left', url + 'btn_left.png', 133, 133);
