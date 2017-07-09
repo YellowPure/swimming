@@ -35,7 +35,7 @@ export default class Game{
 		/**
 		 * 游戏倒计时
 		 */
-		this.timenum = 5;
+		this.timenum = 60;
 		this.timeText = null;
 		this.BAR_WIDTH = 350;
 		this.BAR_HEIGHT = 430;
@@ -124,7 +124,7 @@ export default class Game{
 		this.enemyPool.forEachAlive((child) => {
 			child.body.velocity.y = -this.BASIC_SPEED;
 			// console.log(child.y, child.body.y);
-			if(child.y < 200) {
+			if(child.y < getY(250)) {
 				child.alive = false;
 				child.destroy();
 			}
@@ -170,7 +170,7 @@ export default class Game{
 			this.player.body.velocity.y = -speed;
 		}
 
-		if(this.player.body.y <= getY(200) ) {
+		if(this.player.body.y <= getY(250) ) {
 			this.score = 88;
 			this.point = window.gamedata.total;
 			this.completeSwim = true;
@@ -198,7 +198,8 @@ export default class Game{
 	}
 
 	render() {
-
+		// this.game.debug.bodyInfo(this.player, 32, 32);
+		// this.game.debug.body(this.player);
 	}
 	/**
 	 * 倒计时
@@ -315,7 +316,9 @@ export default class Game{
 		this.player.destroy();
 		this.enemyPool.destroy();
 
-		this.pointText.text = window.gamedata.total + '米';
+		if(this.completeSwim == true) {
+			this.pointText.text = window.gamedata.total + '米';
+		}
 
 		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2 , this.endPanel.height / 2 + 20, this.point, {font: '32px', fill: '#f00', align: 'center'}));
 		this.endPanel.addChild(this.game.make.text(this.endPanel.width / 2, this.endPanel.height / 2 + 70, this.score, {font: '32px', fill: '#f00', align: 'center'}));
@@ -337,7 +340,7 @@ export default class Game{
 		bg3.height = this.game.height;
 		// console.log(this.game.width, this.game.height);
 		this.game.world.setBounds(0, 0, this.game.width, this.game.height * 20);
-		console.log(this.game.width, this.game.height);
+		// console.log(this.game.width, this.game.height);
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	}
 
@@ -359,7 +362,6 @@ export default class Game{
 		
 		let anim = this.player.animations.add('run');
 		anim.play(5, true);
-		// let eAnim = this.enemyPool.animations.add('run');
 		this.enemyPool.callAll('animations.add', 'animations', 'run', [0, 1, 2, 3], 5, true);
 		this.enemyPool.callAll('animations.play', 'animations', 'run');
 	}
@@ -368,13 +370,15 @@ export default class Game{
 	 */
 	tweenPlayer(load) {
 		let x;
+		let bodyOffset = 50;
 		if(load == 1) {
-			x = this.load1;
+			x = this.load1 + bodyOffset;
 		} else if(load == 2) {
-			x = this.load2;
+			x = this.load2 + bodyOffset;
 		} else if(load == 3) {
-			x = this.load3;
+			x = this.load3 + bodyOffset;
 		}
+		console.log(x);
 		let tween = this.game.add.tween(this.player.body).to({x: x}, 500,  Phaser.Easing.Linear.None, true);
 		tween.onStart.add(() => {
 			this.istween = true;
@@ -420,15 +424,18 @@ export default class Game{
 		let arrow = this.game.make.sprite(this.player.width /2 - getX(6), getY(-30), 'red');
 		this.player.addChild(txt);
 		this.player.addChild(arrow);
+		// this.player.immovable = true;
 		// this.player.scale.setTo(2, 2);
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		// this.cursors = this.game.input.keyboard.createCursorKeys();
+		this.player.body.setSize(100, this.player.body.height - 150, 50, 75);
+		console.log(this.load2);
 
 		this.game.camera.follow(this.player);
 	}
 
 	setupEnemies() {
-		this.enemyPool = this.game.add.group();
+		this.enemyPool = this.game.add.physicsGroup();
 		this.enemyPool.enableBody = true;
 		let enemyLen = window.initGame.limitCount;
 
@@ -444,10 +451,10 @@ export default class Game{
 			// y = Math.floor(Math.random() * this.game.world.height);
 			y = this.randomPos(enemyLen, i, this.game.world.height);
 			let enemy = this.enemyPool.create(x, y, 'enemy');
-			// enemy.scale.setTo(.5, .5);
-			// enemy.scale.setTo(2, 2);
-			// enemy.body.setCollisionGroup(this.enemyCollisionGroup);
-			// enemy.body.collides([this.playerCollisionGroup]);
+			/**
+			 * 设置碰撞边界
+			 */
+			enemy.body.setSize(100, enemy.body.height - 150, 50, 75);
 		}
 	}
 
@@ -460,24 +467,24 @@ export default class Game{
 
 	setupText() {
 		let bgW = getX(80);
-		let lineH = getY(15);
-		let lineW = getX(55);
+		let lineH = getY(17);
+		let lineW = getX(53);
 		let sp1 = this.add.sprite(getX(20), getY(10), 'time');
 		// sp1.scale.setTo(.5, .5);
 		// sp1.scale.setTo(1.5, 1.5);
 		sp1.fixedToCamera = true;
-		this.timeText = this.add.text(lineW, lineH, this.timenum + 's', {font: '28px', fill: '#fff'});
+		this.timeText = this.add.text(lineW, lineH, this.timenum + 's', {font: '24px', fill: '#fff'});
 		this.timeText.fixedToCamera = true;
 		// this.timeText.anchor.set(0.5, 0.5);
 		let sp2 = this.add.sprite(bgW + getX(20), getY(10), 'score');
 		sp2.fixedToCamera = true;
 		// sp2.scale.setTo(.5, .5);
-		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '28px', fill: '#fff'});
+		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '24px', fill: '#fff'});
 		this.scoreText.fixedToCamera = true;
 		let sp3 = this.add.sprite(bgW * 2 + getX(20), getY(10), 'point');
 		sp3.fixedToCamera = true;
 		// sp3.scale.setTo(.5, .5);
-		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '28px', fill: '#fff'});
+		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '24px', fill: '#fff'});
 		this.pointText.fixedToCamera = true;
 	}
 

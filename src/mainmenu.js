@@ -34,8 +34,10 @@ export default class MainMenu{
 		// this.rankdata = window.test_rank;
 		this.displayGroup = this.game.add.group();
 
+		let minLen = Math.min(4, window.test_rank.length);
+
 		let ys = [];
-		for(let i = 0;i < 4; i++) {
+		for(let i = 0;i < minLen; i++) {
 			let y = Math.floor(getY(200) + i * getY(400) / 4);
 			ys.push(y);
 		}
