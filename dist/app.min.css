@@ -265,3 +265,18 @@ body {
 	left: 80px;
 	top: 60px;
 }
+.rule-btn, .record-btn {
+	display: block;
+	position: absolute;
+	right: 80px;
+	top: 9px;
+	width: 45px;
+	height: 43px;
+	background: url(/dist/images/rule-btn.png) center top no-repeat;
+	background-size: 45px 43px;
+	display: none;
+}
+.record-btn {
+	right: 20px;
+	background-image: url(/dist/images/record-btn.png);
+}

@@ -61,9 +61,12 @@
 			console.log('window.gamedata.updateFristGameState');
 		}
 		// 游戏完成后的添加游戏记录回调函数
-		window.gamedata.addGameLog = function() {
-			console.log('addGameLog');
+		window.gamedata.addGameLog = function(data) {
+			console.log('addGameLog', data);
 			// 提交数据接口
+			/**
+			 * Object {beginTime: 1499584393738, winingTime: 1499584452406, achievement: 1158, reward: 88, swingType: 2}
+			 **/
 		}
 
 	</script>
@@ -71,6 +74,8 @@
 
 <body>
 	<div id="app"></div>
+	<span class="rule-btn"></span>
+	<span class="record-btn"></span>
 	<div id="overlay">
 		<div id="dialog"></div>
 		<span class="help-span"></span>

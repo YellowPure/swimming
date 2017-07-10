@@ -90,6 +90,8 @@ export default class Game{
 		this.load2 = getX(375 / 2 - 50);
 
 		this.load3 = getX(375 - 100);
+
+		this.gameBeginTime = null;
 	}
 
 	create() {
@@ -262,7 +264,6 @@ export default class Game{
 			this.isstart = true;
 			// 开始游戏倒计时
 			this.timeEvent = this.game.time.events.repeat(Phaser.Timer.SECOND, this.timenum,  this.updateTime, this);
-			
 			this.start();
 		}
 	}
@@ -297,7 +298,13 @@ export default class Game{
 	}
 
 	showEndPanel() {
-		window.gamedata.addGameLog();
+		window.gamedata.addGameLog({
+			beginTime: this.gameBeginTime,
+			winingTime: Date.now(),
+			achievement: this.point,
+			reward: this.score,
+			swingType: (window.gamedata.swingType == 'person') ? 2 : 1
+		});
 		console.log('showEndPanel' , this.clickcount);
 		let texture = this.completeSwim == true ? 'pop2' : 'pop1';
 		this.game.time.events.remove(this.timeEvent);
@@ -359,7 +366,8 @@ export default class Game{
 	}
 
 	start() {
-		
+		// 记录游戏开始时间
+		this.gameBeginTime = Date.now();
 		let anim = this.player.animations.add('run');
 		anim.play(5, true);
 		this.enemyPool.callAll('animations.add', 'animations', 'run', [0, 1, 2, 3], 5, true);
@@ -519,9 +527,9 @@ export default class Game{
 		this.completeSwim = false;
 		this.endPanel.destroy();
 		this.endPanel = null;
+		this.gameBeginTime = null;
 
 		this.state.start('Boot');
-
 	}
 
 }

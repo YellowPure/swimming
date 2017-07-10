@@ -61,6 +61,9 @@ export default class MainMenu{
 		this.tBtn = this.add.button(0, this.game.height - getY(90), 'team_btn', this.click2, this);
 		// createSuccess();
 		this.controlState1 = Control.init();
+
+		$('.record-btn').show();
+		$('.rule-btn').show();
 	}
 
 	update() {

@@ -77,6 +77,17 @@ const teamControl = () => {
     return true;
 }
 
+// 记录按钮被点击
+$('.record-btn').on('click', () => {
+    // do something
+    console.log('record-btn click');
+});
+// 规则按钮被点击
+$('.rule-btn').on('click', () => {
+    // do something
+    console.log('rule-btn click');
+});
+
 export default {
     control,
     init

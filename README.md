@@ -22,9 +22,7 @@ window.test_rank  length >= 4
 window.initGame
 <!--初始团队信息-->
 window.initTeam
-<!--个人完赛时回调函数-->
-window.gamedata.personalGameLog
-<!--团队完赛时回调函数-->
+<!--完赛时回调函数-->
 window.gamedata.addGameLog
 <!--辅助变量 勿修改-->
 window.gamedata.swingType
