@@ -81,8 +81,9 @@ export default class MainMenu{
 
 	click1() {
 		window.gamedata.swingType = 'person';
-		if(this.controlState1 == false) {
+		if(this.controlState1 != true) {
 			Control.init();
+			return;
 		}
 		let res = Control.control('person');
 		if(res == true) {
@@ -92,8 +93,9 @@ export default class MainMenu{
 
 	click2() {
 		window.gamedata.swingType = 'team';
-		if(this.controlState1 == false) {
+		if(this.controlState1 != true) {
 			Control.init();
+			return;
 		}
 		let res = Control.control('team');
 		if(res == true) {

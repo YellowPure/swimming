@@ -18,11 +18,11 @@ const init = () => {
     // 检查活动是否在规定时间内
     if(starttime > Date.now()) {
         showDialog1(1);
-        return;
+        return false;
     }
     if(endtime < Date.now()) {
         showDialog1(2);
-        return;
+        return false;
     }
     // 首次玩
     if(window.initGame.gameState == 2) {
