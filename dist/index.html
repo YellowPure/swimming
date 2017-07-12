@@ -31,7 +31,7 @@
 		// 初始游戏信息
 		window.initGame = { 
 			"teamState": 3,  //在团队的状态1在2踢出3退出
-			"isTeam": 1, //是否加入团队1未加入2加入
+			"isTeam": 2, //是否加入团队1未加入2加入
 			"gameState": 1,  //是否首次游戏1否2是
 			"personalCount": 1,  //个人游戏次数
 			"teamCount": 2, //团队游戏次数
@@ -59,6 +59,7 @@
 		// 出现新手引导后更新状态的回调函数
 		window.gamedata.updateFristGameState = function() {
 			console.log('window.gamedata.updateFristGameState');
+			window.initGame.gameState = 1;
 		}
 		// 游戏完成后的添加游戏记录回调函数
 		window.gamedata.addGameLog = function(data) {

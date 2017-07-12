@@ -81,8 +81,13 @@ export default class MainMenu{
 
 	click1() {
 		window.gamedata.swingType = 'person';
+		this.controlState1 = Control.init();
+		// if(this.controlState1 != true) {
+		// 	Control.init();
+		// 	return;
+		// }
+		this.controlState1 = Control.init();
 		if(this.controlState1 != true) {
-			Control.init();
 			return;
 		}
 		let res = Control.control('person');
@@ -93,10 +98,16 @@ export default class MainMenu{
 
 	click2() {
 		window.gamedata.swingType = 'team';
+		this.controlState1 = Control.init();
+
 		if(this.controlState1 != true) {
-			Control.init();
 			return;
 		}
+
+		// if(this.controlState1 != true) {
+		// 	Control.init();
+		// 	return;
+		// }
 		let res = Control.control('team');
 		if(res == true) {
 			this.startGame();

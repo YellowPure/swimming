@@ -24,6 +24,7 @@ const init = () => {
         showDialog1(2);
         return false;
     }
+    
     // 首次玩
     if(window.initGame.gameState == 2) {
         guide1();
