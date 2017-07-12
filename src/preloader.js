@@ -14,7 +14,7 @@ export default class Preloader{
 		} else {
 			//移动设备相关的设置
 			//在这里我们定义了：“缩放游戏，不小于 480x260, 不超过 1024x768”
-			this.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
+			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			this.scale.setMinMax(480, 260, 1024, 768);
 			this.scale.forceLandscape = true;
 		}

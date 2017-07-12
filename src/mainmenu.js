@@ -1,7 +1,7 @@
 import { showDialog1, showDialog2,showDialog3, showDialog5 } from './dialogs.js';
 import { guide1 } from './guide.js';
 import { createTeam, createSuccess } from './createTeam.js';
-import {getX, getY} from './util.js';
+import {getX, getY, getW, getH} from './util.js';
 import Control from './control.js';
 
 export default class MainMenu{
@@ -26,9 +26,9 @@ export default class MainMenu{
 		//我们已经把所有资源都加载进来了，所以，现在可以进入主菜单
 		//在这里，我们将播放一段音乐，添加一张图片和一个按钮
 		let bg = this.add.sprite(0, 0,  'main');
-		bg.width = window.innerWidth;
-		bg.height = window.innerHeight;
-		bg.scale.setTo(2, 2);
+		bg.width = 750;
+		bg.height = 1334;
+		// bg.scale.setTo(1.5, 1.5);
 		// this.loadingText = this.add.text(this.game.width / 2, this.game.height / 2 - 80, '开始游戏', { font: '50px', fill: '#fff'});
 		// this.loadingText.anchor.setTo(.5, .5);
 		// this.rankdata = window.test_rank;
@@ -38,27 +38,27 @@ export default class MainMenu{
 
 		let ys = [];
 		for(let i = 0;i < minLen; i++) {
-			let y = Math.floor(getY(200) + i * getY(400) / 4);
+			let y = Math.floor(400 + i * 800 / 4);
 			ys.push(y);
 		}
 
 		while(ys.length > 0) {
 			let i = Math.floor(Math.random() * ys.length);
 			let data = window.test_rank[i];
-			console.log(data);
-			let person = this.displayGroup.create(this.game.width + i * getX(85), ys[i], 'report');
+			// console.log(data);
+			let person = this.displayGroup.create(this.game.width + i * 170, ys[i], 'report');
 			let text = this.make.text(110, 2, data.teamName + '游出' + data.totalAchievement + '米', { font: '22px', fill: '#fff'});
 			person.addChild(text);
 			ys.splice(i, 1);
 		}
 
 
-		this.bridge = this.add.sprite(0, getY(170), 'bridge');
-		this.add.sprite(0, this.game.height - getY(75), 'grass');
+		this.bridge = this.add.sprite(0, 340, 'bridge');
+		
+		let grass = this.add.sprite(0, this.game.height - 150, 'grass');
 
-		this.sfBtn = this.add.button(this.game.width - getY(150), this.game.height - getY(90), 'self_btn', this.click1, this);
-
-		this.tBtn = this.add.button(0, this.game.height - getY(90), 'team_btn', this.click2, this);
+		this.sfBtn = this.add.button(this.game.width - 300, this.game.height - 180, 'self_btn', this.click1, this);
+		this.tBtn = this.add.button(0, this.game.height - 180, 'team_btn', this.click2, this);
 		// createSuccess();
 		this.controlState1 = Control.init();
 

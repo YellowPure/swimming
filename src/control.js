@@ -81,11 +81,13 @@ const teamControl = () => {
 $('.record-btn').on('click', () => {
     // do something
     console.log('record-btn click');
+    createTeam(1);
 });
 // 规则按钮被点击
 $('.rule-btn').on('click', () => {
     // do something
     console.log('rule-btn click');
+    createTeam(2);
 });
 
 export default {

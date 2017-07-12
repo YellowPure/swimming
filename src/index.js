@@ -13,7 +13,7 @@ import Control from './control.js';
 
 class App {
 	constructor() {
-		let game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.AUTO, 'app');
+		let game = new Phaser.Game(750, 1334, Phaser.AUTO, 'app');
 		let boot = new Boot(game);
 		// alert('test'); 
 		let preloader = new Preloader(game);
