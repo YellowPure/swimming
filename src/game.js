@@ -1,4 +1,4 @@
-import {getX, getY} from './util.js';
+import {getX, getY, getW, getH} from './util.js';
 
 /**
  * game游戏主类 extends Phaser.State
@@ -35,7 +35,7 @@ export default class Game{
 		/**
 		 * 游戏倒计时
 		 */
-		this.timenum = 5;
+		this.timenum = 60;
 		this.timeText = null;
 		this.BAR_WIDTH = 350;
 		this.BAR_HEIGHT = 430;
@@ -60,7 +60,7 @@ export default class Game{
 		 */
 		this.curload = 2;
 		/**
-		 * 加速度
+		 * 阻力加速度
 		 */
 		this.acceleration = 0;
 		/**
@@ -92,6 +92,8 @@ export default class Game{
 		this.load3 = 750 - 200;
 
 		this.gameBeginTime = null;
+
+		this.overCall = false;
 	}
 
 	create() {
@@ -112,9 +114,20 @@ export default class Game{
 
 	update() {
 		if(this.end == true) {
-			if(!this.endPanel) {
-				this.showEndPanel();
+			if(!this.overCall) {
+				this.overCall = true;
+				window.gamedata.addGameLog({
+					beginTime: this.gameBeginTime,
+					winingTime: Date.now(),
+					achievement: this.point,
+					reward: this.score,
+					swingType: (window.gamedata.swingType == 'person') ? 2 : 1,
+					callback: this.showEndPanel.bind(this)
+				});
 			}
+			// if(!this.endPanel) {
+			// 	this.showEndPanel();
+			// }
 		}
 		if(!this.isstart) return;
 		this.movePlayer();
@@ -165,7 +178,12 @@ export default class Game{
 		let speed = this.acceleration + this.BASIC_SPEED;
 		if(Math.abs(this.curtime - Date.now()) > 1000) {
 			this.curtime = Date.now();
-			// this.acceleration = 0;
+			if(this.acceleration > 0) {
+				this.acceleration -= window.gamedata.acceleration;
+			}
+			if(this.acceleration < 0) {
+				this.acceleration = 0;
+			}
 			this.updatePoint();
 		}
 		// this.game.physics.arcade.moveToXY(this.player, 0, this.player.body.y - this.game.world.height / 60, 60, 1000 );
@@ -302,16 +320,10 @@ export default class Game{
 	}
 
 	showEndPanel() {
-		window.gamedata.addGameLog({
-			beginTime: this.gameBeginTime,
-			winingTime: Date.now(),
-			achievement: this.point,
-			reward: this.score,
-			swingType: (window.gamedata.swingType == 'person') ? 2 : 1
-		});
+		
 		console.log('showEndPanel' , this.clickcount);
 		let texture = this.completeSwim == true ? 'pop2' : 'pop1';
-		this.game.time.events.remove(this.timeEvent);
+		// this.game.time.events.remove(this.timeEvent);
 		let bmd = this.add.bitmapData(this.game.width, this.game.height);
 		bmd.ctx.beginPath();
 		bmd.ctx.rect(0, 0, this.game.width, this.game.height);
@@ -358,11 +370,13 @@ export default class Game{
 	setupCtrl() {
 		this.leftBtn = this.add.button(30, this.game.height - 150, 'btn_left', this.onLeftHandler, this, 0, 0, 1);
 		this.leftBtn.fixedToCamera = true;
-
+		// this.leftBtn.width = getW(this.leftBtn.width);
 		this.rightBtn = this.add.button(this.game.width - 180, this.game.height - 150, 'btn_right', this.onRightHandler, this, 0, 0, 1);
 		this.rightBtn.fixedToCamera = true;
+		// this.rightBtn.width = getW(this.rightBtn.width);
 		this.upBtn = this.add.button(this.game.world.centerX - 66 , this.game.height - 180, 'btn_up', this.onUpHandler, this, 0, 0, 1);
 		this.upBtn.fixedToCamera = true;
+		// this.upBtn.width = getW(this.upBtn.width);
 
 		// this.leftBtn.scale.setTo(.5, .5);
 		// this.upBtn.scale.setTo(.5, .5);
@@ -482,6 +496,7 @@ export default class Game{
 		let lineH = 34;
 		let lineW = 106;
 		let sp1 = this.add.sprite(40, 20, 'time');
+		// sp1.width = getW(sp1.width);
 		// sp1.scale.setTo(.5, .5);
 		// sp1.scale.setTo(1.5, 1.5);
 		sp1.fixedToCamera = true;
@@ -490,11 +505,13 @@ export default class Game{
 		// this.timeText.anchor.set(0.5, 0.5);
 		let sp2 = this.add.sprite(bgW + 40, 20, 'score');
 		sp2.fixedToCamera = true;
+		// sp2.width = getW(sp2.width);
 		// sp2.scale.setTo(.5, .5);
 		this.scoreText = this.add.text(bgW + lineW, lineH, this.score + '楼币', {font: '24px', fill: '#fff'});
 		this.scoreText.fixedToCamera = true;
 		let sp3 = this.add.sprite(bgW * 2 + 40, 20, 'point');
 		sp3.fixedToCamera = true;
+		// sp3.width = getW(sp3.width);
 		// sp3.scale.setTo(.5, .5);
 		this.pointText = this.add.text( bgW  * 2 + lineW, lineH, this.point + 'm', {font: '24px', fill: '#fff'});
 		this.pointText.fixedToCamera = true;
@@ -532,7 +549,7 @@ export default class Game{
 		this.endPanel.destroy();
 		this.endPanel = null;
 		this.gameBeginTime = null;
-
+		this.overCall = false;
 		this.state.start('Boot');
 	}
 

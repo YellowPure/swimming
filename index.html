@@ -8,7 +8,9 @@
 	<script>
 		window.gamedata = {
 			speed: 15, // 设置人物点击一次增加速度
+			acceleration: 10, //阻力加速度 不能小于0
 			total: 1158, // 总距离
+			modules: {} // 暴露模块
 		};
 		// 配置游戏内资源地址
 		window.gamedata.imgUrl = './images/';
@@ -66,8 +68,84 @@
 			console.log('addGameLog', data);
 			// 提交数据接口
 			/**
-			 * Object {beginTime: 1499584393738, winingTime: 1499584452406, achievement: 1158, reward: 88, swingType: 2}
+			 * Object {beginTime: 1499584393738, winingTime: 1499584452406, achievement: 1158, reward: 88, swingType: 2, callback: 显示结果页}
 			 **/
+			data.callback();
+		}
+		// 开始时团队按钮被点击
+		window.gamedata.teamClick = function() {
+			// 首次玩
+			if(window.initGame.gameState == 2) {
+				window.gamedata.modules.guide.guide1();
+				window.gamedata.updateFristGameState();
+				return false;
+			}
+			if(window.initGame.teamState == 2) {
+				window.gamedata.modules.dialogs.showDialog3(2);
+				return false;
+			}
+			// 是否加入团队 1 未加入 2已加入
+			if(window.initGame.isTeam == 1) {
+				window.gamedata.modules.dialogs.showDialog3(1);
+				return false;
+			}
+
+			if(window.initGame.teamCount >= 3) {
+				window.gamedata.modules.dialogs.showDialog2('tean');
+				return false;
+			}
+			return true;
+		}
+
+		// 开始时个人按钮被点击
+		window.gamedata.personClick = function() {
+
+			// 首次玩
+			if(window.initGame.gameState == 2) {
+				window.gamedata.modules.guide.guide1();
+				window.gamedata.updateFristGameState();
+				return false;
+			}
+			if(window.initGame.teamState == 2) {
+				window.gamedata.modules.dialogs.showDialog3(2);
+				return false;
+			}
+			if(window.initGame.personalCount >= 3) {
+				window.gamedata.modules.dialogs.showDialog2('person');
+				return false;
+			}
+			return true;
+		}
+
+
+		// 进入游戏时 游戏状态判断 true 通过检测 false 未通过
+		window.gamedata.mainInit = function() {
+			const starttime = new Date(window.initGame.gameBeginTime).getTime();
+			const endtime = new Date(window.initGame.gameEndTime).getTime();
+			// 检查活动是否在规定时间内
+			if(starttime > Date.now()) {
+				window.gamedata.modules.dialogs.showDialog1(1);
+				return false;
+			}
+			if(endtime < Date.now()) {
+				window.gamedata.modules.dialogs.showDialog1(2);
+				return false;
+			}
+			
+			
+			return true;
+		}
+
+		// 引导后进入游戏
+		window.gamedata.intoGame = function() {
+			if(window.gamedata.swingType == 'person') {
+				console.log('do here');
+				window.initGame.gameState = 1;
+				window.gamedata.modules.data.mainMenu.click1();
+			} else {
+				window.initGame.gameState = 1;
+				window.gamedata.modules.data.mainMenu.click2();
+			}
 		}
 
 	</script>

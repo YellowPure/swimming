@@ -11,12 +11,20 @@ const getY = (y) => {
     return y * window.devicePixelRatio;
 }
 
+const u = window.navigator.userAgent;
+const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
 /**
- * 设置宽度
+ * 设置宽度 只对android做适配
  * @param {*} width 
  */
 const getW = (width) => {
-    return width * window.devicePixelRatio / 2;
+    if(isAndroid) {
+        return width * 375 / window.innerWidth;
+    } else {
+        return width;
+    }
 }
 
 /**

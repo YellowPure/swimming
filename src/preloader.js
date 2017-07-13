@@ -22,10 +22,22 @@ export default class Preloader{
 		this.scale.pageAlignVertically = true;
 
 		this.game.load.onFileComplete.add(this.fileComplete, this);
+		this.game.load.onLoadComplete.add(this.loadComplete, this);
 	}
 
 	fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
 		this.loadingTxt.setText('正在加载...' + progress + '%');
+	}
+
+	loadComplete() {
+		this.loadingTxt.setText('正在加载...100%');
+		// this.loadingTxt.destroy();
+		console.log('Preloader create');
+		//当加载完成后，禁止裁剪载入条，因为在音乐解码之后，将进入 update 循环
+		// this.preloadBar.cropEnabled = false;
+		setTimeout(() => {
+			this.state.start('MainMenu');
+		}, 100);
 	}
 
 	preload() {
@@ -75,11 +87,7 @@ export default class Preloader{
 	}
 
 	create() {
-		console.log('Preloader create');
-		//当加载完成后，禁止裁剪载入条，因为在音乐解码之后，将进入 update 循环
-		// this.preloadBar.cropEnabled = false;
-		this.state.start('MainMenu');
-		this.loadingTxt.destroy();
+		
 	}
 
 	update() {

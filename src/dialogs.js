@@ -145,10 +145,14 @@ const showDialog5 = () => {
 	}
 }
 
-export {
+const module = {
 	showDialog1,
 	showDialog2,
 	showDialog3,
 	showDialog4,
 	showDialog5
-}
+};
+
+window.gamedata.modules.dialogs = module;
+
+export default module;

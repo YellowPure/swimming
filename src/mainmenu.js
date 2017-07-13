@@ -38,7 +38,7 @@ export default class MainMenu{
 
 		let ys = [];
 		for(let i = 0;i < minLen; i++) {
-			let y = Math.floor(400 + i * 800 / 4);
+			let y = Math.floor(400 + i * 700 / 4);
 			ys.push(y);
 		}
 
@@ -53,12 +53,12 @@ export default class MainMenu{
 		}
 
 
-		this.bridge = this.add.sprite(0, 340, 'bridge');
+		this.bridge = this.add.sprite(0, 350, 'bridge');
 		
 		let grass = this.add.sprite(0, this.game.height - 150, 'grass');
 
-		this.sfBtn = this.add.button(this.game.width - 300, this.game.height - 180, 'self_btn', this.click1, this);
-		this.tBtn = this.add.button(0, this.game.height - 180, 'team_btn', this.click2, this);
+		this.tBtn = this.add.button(this.game.width / 2 - 320, this.game.height - 180, 'team_btn', this.click2, this);
+		this.sfBtn = this.add.button(this.game.width / 2 + 20, this.game.height - 180, 'self_btn', this.click1, this);
 		// createSuccess();
 		this.controlState1 = Control.init();
 

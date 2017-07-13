@@ -4,9 +4,13 @@ const boot = null;
 const mainMenu = null;
 const game = null;
 
-export default {
+const module = {
     preloader,
     boot,
     mainMenu,
     game
 }
+
+window.gamedata.modules.data = module;
+
+export default module;

@@ -26,6 +26,7 @@ dialog.on('click', '.next-btn2', () => {
 	if(!overlay.is(':hidden')) {
 		overlay.hide();
 	}
+	window.gamedata.intoGame();
 	// Data.mainMenu.startGame();
 });
 
@@ -71,6 +72,10 @@ const guide3 = () => {
 }
 
 
-export {
+const module = {
 	guide1
-}
+};
+
+window.gamedata.modules.guide = module;
+
+export default module;
