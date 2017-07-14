@@ -35,7 +35,7 @@ export default class Game{
 		/**
 		 * 游戏倒计时
 		 */
-		this.timenum = 60;
+		this.timenum = 5;
 		this.timeText = null;
 		this.BAR_WIDTH = 350;
 		this.BAR_HEIGHT = 430;
@@ -116,6 +116,8 @@ export default class Game{
 		if(this.end == true) {
 			if(!this.overCall) {
 				this.overCall = true;
+				this.player.destroy();
+				this.enemyPool.destroy();
 				window.gamedata.addGameLog({
 					beginTime: this.gameBeginTime,
 					winingTime: Date.now(),
@@ -336,9 +338,6 @@ export default class Game{
 		this.endPanel.fixedToCamera = true;
 		// this.endPanel.scale.setTo(.5, .5);
 		
-		this.player.destroy();
-		this.enemyPool.destroy();
-
 		if(this.completeSwim == true) {
 			this.pointText.text = window.gamedata.total + '米';
 		}
