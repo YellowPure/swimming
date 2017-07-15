@@ -71,6 +71,8 @@ export default class Preloader{
 		this.load.image('record_btn', url + 'record_btn.png');
 		this.load.image('self_btn', url + 'self_btn.png');
 		this.load.image('team_btn', url + 'team_btn.png');
+		this.load.image('team_btn_grey', url + 'team_btn_grey.png');
+		this.load.image('self_btn_grey', url + 'self_btn_grey.png');
 		this.load.image('main', url + 'main.png');
 		this.load.image('grass', url + 'grass.png');
 		this.load.image('report', url + 'report.png');

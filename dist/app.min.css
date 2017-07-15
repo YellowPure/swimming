@@ -280,3 +280,11 @@ body {
 	right: 20px;
 	background-image: url(/dist/images/record-btn.png);
 }
+.end p {
+	font-size: 14px;
+}
+.title {
+	display: inline-block;
+	margin-bottom: 8px;
+	margin-top: 4px;
+}

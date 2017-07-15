@@ -1,4 +1,5 @@
 import {createTeam} from './createTeam.js';
+import Data from './data';
 const dialog = $('#dialog');
 const overlay = $('#overlay');
 /**
@@ -36,7 +37,7 @@ const showDialog1 = (type = 1) => {
 	let str = `
 		<div class='${title}'>
 			<div>
-			<p>开放时间
+			<p><span class='title'>开放时间</span>
 			<br />
 			${window.initGame.gameBeginTime}
 			<br />
@@ -53,6 +54,7 @@ const showDialog1 = (type = 1) => {
 	if(overlay.is(':hidden')) {
 		overlay.show();
 	}
+	Data.mainMenu.setBtnGrey();
 }
 
 const showDialog2 = (type='person') => {

@@ -35,7 +35,7 @@ export default class Game{
 		/**
 		 * 游戏倒计时
 		 */
-		this.timenum = 5;
+		this.timenum = 60;
 		this.timeText = null;
 		this.BAR_WIDTH = 350;
 		this.BAR_HEIGHT = 430;
@@ -445,7 +445,7 @@ export default class Game{
 	setupPlayer() {
 		this.player = this.add.sprite(this.load2, this.game.world.height - 480, 'person');
 		// this.player.scale.setTo(.5, .5);
-		let txt = this.game.make.text(this.player.width / 2 - 20, -100, '玩家', {font: '28px', fill: '#f00', align: 'center'});
+		let txt = this.game.make.text(this.player.width / 2 - 26, -100, '玩家', {font: '28px', fill: '#f00', align: 'center'});
 		let arrow = this.game.make.sprite(this.player.width /2 - 12, -60, 'red');
 		this.player.addChild(txt);
 		this.player.addChild(arrow);
