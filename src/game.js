@@ -94,6 +94,8 @@ export default class Game{
 		this.gameBeginTime = null;
 
 		this.overCall = false;
+
+		this.bg3 = null;
 	}
 
 	create() {
@@ -137,7 +139,13 @@ export default class Game{
 		// 检测碰撞、生成敌人、开火、响应玩家输入，任何东西都可以放在这里
 		this.checkCollisions();
 		this.checkOverEnemy();
+
+		this.checkCollisionsBg3();
 		// this.time++;
+	}
+
+	checkCollisionsBg3() {
+		this.game.physics.arcade.collide(this.player, this.bg3, this.changeStatus, null, this);
 	}
 
 	moveEnemies() {
@@ -170,8 +178,13 @@ export default class Game{
 	 * 每秒更新米数
 	 */
 	updatePoint() {
-		this.point = Math.floor((this.game.world.height - this.player.body.y) / this.game.world.height * window.gamedata.total);
+		// this.point = Math.floor((this.game.world.height - this.player.body.y) / this.game.world.height * window.gamedata.total);
+		if(this.isCollisions == true || this.completeSwim == true) return;
+
+		let distance = this.clickcount * 6 + 6;
+		this.point +=distance;
 		this.pointText.text = this.point + '米';
+		this.clickcount = 0;
 	}
 
 	movePlayer() {
@@ -196,31 +209,44 @@ export default class Game{
 			this.player.body.velocity.y = -speed;
 		}
 
-		if(this.player.body.y <= 500 ) {
-			this.score = 88;
-			this.point = window.gamedata.total;
-			this.completeSwim = true;
-			this.end = true;
-			this.isstart = false;
+		if(this.point >= this.total &&　this.leftBtn.inputEnabled == true) {
+			this.setComplete();
 		}
+	}
 
-		// if (this.cursors.up.isDown)
-		// {
-		// 	this.player.body.moveUp(3000)
-		// }
-		// else if (this.cursors.down.isDown)
-		// {
-		// 	this.player.body.moveDown(3000);
-		// }
+	/**
+	 * 完成
+	 */
+	setComplete() {
+		// 设置冲刺过河的背景
+		this.game.world.height;
+		let i = 0;
+		while(i * this.bg3.height < this.player.y) {
+			i++;
+		}
+		console.log('position y', i, i * this.bg3.height);
+		this.bg3.y = (i-2) * this.bg3.height;
+		
+		this.leftBtn.inputEnabled = false;
+		this.upBtn.inputEnabled = false;
+		this.rightBtn.inputEnabled = false;
 
-		// if (this.cursors.left.isDown)
-		// {
-		// 	this.player.body.velocity.x = -3000;
-		// }
-		// else if (this.cursors.right.isDown)
-		// {
-		// 	this.player.body.moveRight(3000);
-		// }
+		this.bg3.body.setSize(this.bg3.width, 500, 0, 0);
+		this.completeSwim = true;
+		this.game.world.setBounds(0, this.bg3.y, this.game.width, this.bg3.height + this.bg3.y);
+		this.enemyPool.destroy();
+		this.pointText.text = this.total + '米';
+		// this.score = 88;
+		// this.point = window.gamedata.total;
+		// this.end = true;
+		// this.isstart = false;
+	}
+
+	changeStatus() {
+		this.score = 88;
+		this.point = window.gamedata.total;
+		this.end = true;
+		this.isstart = false;
 	}
 
 	render() {
@@ -298,7 +324,7 @@ export default class Game{
 
 
 	checkCollisions() {
-		if(this.isCollisions == false) {
+		if(this.isCollisions == false && this.completeSwim != true) {
 			this.game.physics.arcade.collide(this.player, this.enemyPool, this.collisions, null, this);
 		}
 	}
@@ -349,6 +375,7 @@ export default class Game{
 	}
 
 	setupBackground() {
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		// this.add.s
 		let tile = this.add.tileSprite(0, 0, this.game.width, this.game.height * 20, 'bg_2');
 
@@ -357,13 +384,15 @@ export default class Game{
 		bg1.width = this.game.width;
 		bg1.height = this.game.height;
 
-		let bg3 = this.add.sprite(0, 0, 'bg_3');
-		bg3.width = this.game.width;
-		bg3.height = this.game.height;
+		this.bg3 = this.add.sprite(0, 0, 'bg_3');
+		this.bg3.width = this.game.width;
+		this.bg3.height = this.game.height;
+		this.game.physics.enable(this.bg3, Phaser.Physics.ARCADE);
+		this.bg3.body.immovable = true;
+		
 		// console.log(this.game.width, this.game.height);
 		this.game.world.setBounds(0, 0, this.game.width, this.game.height * 20);
 		// console.log(this.game.width, this.game.height);
-		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	}
 
 	setupCtrl() {
@@ -454,7 +483,6 @@ export default class Game{
 		this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
 		// this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.player.body.setSize(100, this.player.body.height - 150, 50, 75);
-		console.log(this.load2);
 
 		this.game.camera.follow(this.player);
 	}
@@ -549,6 +577,8 @@ export default class Game{
 		this.endPanel = null;
 		this.gameBeginTime = null;
 		this.overCall = false;
+		this.bg3.destroy();
+		this.game.world.setBounds(0, 0, this.game.width, this.game.height);
 		this.state.start('Boot');
 	}
 
