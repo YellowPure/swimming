@@ -134,7 +134,10 @@ export default class Game{
 			// }
 		}
 		if(!this.isstart) return;
-		this.movePlayer();
+		this.updateInfo();
+		if(this.leftBtn.inputEnabled == true) {
+			this.movePlayer();
+		}
 		this.moveEnemies();
 		// 检测碰撞、生成敌人、开火、响应玩家输入，任何东西都可以放在这里
 		this.checkCollisions();
@@ -153,12 +156,12 @@ export default class Game{
 		this.enemyPool.forEachAlive((child) => {
 			child.body.velocity.y = -this.BASIC_SPEED;
 			// console.log(child.y, child.body.y);
-			if(child.y < 500) {
+			if(child.y < this.bg3.y + 500) {
 				child.alive = false;
 				child.destroy();
 			}
 			// debugger;
-		});
+		}, this, true);
 		// this.enemyPool.y -=2;
 	}
 
@@ -179,7 +182,7 @@ export default class Game{
 	 */
 	updatePoint() {
 		// this.point = Math.floor((this.game.world.height - this.player.body.y) / this.game.world.height * window.gamedata.total);
-		if(this.isCollisions == true || this.completeSwim == true) return;
+		if(this.isCollisions == true) return;
 
 		let distance = this.clickcount * 6 + 6;
 		this.point +=distance;
@@ -187,10 +190,7 @@ export default class Game{
 		this.clickcount = 0;
 	}
 
-	movePlayer() {
-		if (!this.isstart) return;
-		// this.player.body.setZeroVelocity();
-		let speed = this.acceleration + this.BASIC_SPEED;
+	updateInfo() {
 		if(Math.abs(this.curtime - Date.now()) > 1000) {
 			this.curtime = Date.now();
 			if(this.acceleration > 0) {
@@ -201,6 +201,12 @@ export default class Game{
 			}
 			this.updatePoint();
 		}
+	}
+
+	movePlayer() {
+		if (!this.isstart) return;
+		// this.player.body.setZeroVelocity();
+		let speed = this.acceleration + this.BASIC_SPEED;
 		// this.game.physics.arcade.moveToXY(this.player, 0, this.player.body.y - this.game.world.height / 60, 60, 1000 );
 
 		if(this.isCollisions == true) {
@@ -209,7 +215,8 @@ export default class Game{
 			this.player.body.velocity.y = -speed;
 		}
 
-		if(this.point >= this.total &&　this.leftBtn.inputEnabled == true) {
+
+		if(this.point >= (this.total - 30) &&　this.leftBtn.inputEnabled == true) {
 			this.setComplete();
 		}
 	}
@@ -224,7 +231,7 @@ export default class Game{
 		while(i * this.bg3.height < this.player.y) {
 			i++;
 		}
-		console.log('position y', i, i * this.bg3.height);
+		// console.log('position y', i, i * this.bg3.height);
 		this.bg3.y = (i-2) * this.bg3.height;
 		
 		this.leftBtn.inputEnabled = false;
@@ -232,10 +239,21 @@ export default class Game{
 		this.rightBtn.inputEnabled = false;
 
 		this.bg3.body.setSize(this.bg3.width, 500, 0, 0);
-		this.completeSwim = true;
 		this.game.world.setBounds(0, this.bg3.y, this.game.width, this.bg3.height + this.bg3.y);
-		this.enemyPool.destroy();
-		this.pointText.text = this.total + '米';
+
+		console.log(this.enemyPool);
+		// this.enemyPool.forEachAlive((child) => {
+		// 	// console.log(true);
+		// 	// this.enemyPool.remove(child);
+		// 	if(child.y < this.player.y - this.bg3.height) {
+		// 		child.kill();
+		// 	}
+		// }, this, true);
+		// console.log(this.player.y, this.bg3.y, this.game.world.width, this.game.world.height);
+		// this.player.body.moveTo(5000, this.player.y - 200);
+		this.game.physics.arcade.moveToXY(this.player, this.player.x, this.bg3.y + 200, this.player.body.velocity.y , 5000);
+		// this.pointText.text = this.total + '米';
+
 		// this.score = 88;
 		// this.point = window.gamedata.total;
 		// this.end = true;
@@ -245,6 +263,8 @@ export default class Game{
 	changeStatus() {
 		this.score = 88;
 		this.point = window.gamedata.total;
+		this.timeEvent && this.game.time.events.remove(this.timeEvent);
+		this.completeSwim = true;
 		this.end = true;
 		this.isstart = false;
 	}
