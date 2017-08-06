@@ -5,8 +5,8 @@ const overlay = $('#overlay');
 
 dialog.on('input', '.textarea-address', () => {
     if($('.textarea-address').val()!='') {
-        $('.textarea-address').removeClass('address-add');
-        $('.textarea-address').removeClass('address-edit');
+        $('.table').removeClass('address-add');
+        $('.table').removeClass('address-edit');
     }
 });
 
@@ -54,8 +54,10 @@ const createTeam = (type = 1) => {
             <input type='text' class='input-name' name='name' />
             <input type='text' class='input-num' name='num' />
             ${dom}
-            <textarea class='textarea-address ${cl}' name='address'>
+            <div class='table  ${cl}'>
+            <textarea class='textarea-address' rows='3'  name='address'>
             </textarea>
+            </div>
             <span class='submit grey'></span>
             </form>
             <span class='close'></span>
@@ -65,6 +67,20 @@ const createTeam = (type = 1) => {
 	if(overlay.is(':hidden')) {
 		overlay.show();
 	}
+
+	// var $textarea = $('textarea-address');
+
+    // function positionTextarea() {
+    //     var h = $wrap.height();
+    //     var top = Math.max( 0, ( h - $dummy.height() ) * 0.5 );
+    //     $textarea.css({
+    //     paddingTop: top,
+    //     height: h - top
+    // });
+    
+    // $textarea.on( 'keyup change', function( event ) {
+	// 	positionTextarea();
+    // }).trigger('change');
 }
 
 const createSuccess = () => {

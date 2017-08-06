@@ -117,15 +117,22 @@ body {
 .input-num {
 	top: 121px;
 }
-.textarea-address {
-	position: absolute;
-	display: block;
+.table {
+	display: flex;
 	width: 223px;
-	height: 80px;
 	left: 50px;
 	top: 200px;
+	height: 80px;
+	align-items: center;
+	position: absolute;
+}
+
+.textarea-address {
+	/*display: block;*/
+	width: 223px;
 	border: none;
 	background: none;
+	resize: none;
 }
 .address-add {
 	background: url(./images/add_btn.png) center center no-repeat;
