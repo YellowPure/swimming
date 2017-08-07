@@ -1,4 +1,4 @@
-import {createTeam} from './createTeam.js';
+import {createTeam, createSuccess} from './createTeam.js';
 import Data from './data';
 const dialog = $('#dialog');
 const overlay = $('#overlay');
@@ -24,6 +24,7 @@ dialog.on('click', '.create', () => {
 	if(!overlay.is(':hidden')) {
 		overlay.hide();
 	}
+	// createSuccess();
 	createTeam();
 });
 

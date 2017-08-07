@@ -113,6 +113,7 @@ body {
 	height: 25px;
 	left: 128px;
 	top: 81px;
+	/* color: #388092; */
 }
 .input-num {
 	top: 121px;
@@ -126,13 +127,17 @@ body {
 	align-items: center;
 	position: absolute;
 }
-
+div[name='address'] {
+	/* color: #388092; */
+}
 .textarea-address {
 	/*display: block;*/
 	width: 223px;
+	min-height: 20px;
 	border: none;
 	background: none;
-	resize: none;
+	text-align: left;
+	text-indent: 15px;
 }
 .address-add {
 	background: url(/dist/images/add_btn.png) center center no-repeat;
@@ -185,7 +190,11 @@ body {
 	text-align: left;
 	margin-top: 60px;
 	height: 70px;
+	display: flex;
+	align-items: center;
+	/* justify-content: center; */
 }
+
 .success-team .start-btn {
 	display: block;
 	width: 231px;

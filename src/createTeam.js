@@ -4,7 +4,7 @@ const dialog = $('#dialog');
 const overlay = $('#overlay');
 
 dialog.on('input', '.textarea-address', () => {
-    if($('.textarea-address').val()!='') {
+    if($('.textarea-address').html()!='') {
         $('.table').removeClass('address-add');
         $('.table').removeClass('address-edit');
     }
@@ -55,8 +55,8 @@ const createTeam = (type = 1) => {
             <input type='text' class='input-num' name='num' />
             ${dom}
             <div class='table  ${cl}'>
-            <textarea class='textarea-address' rows='3'  name='address'>
-            </textarea>
+            <div contenteditable='true' class='textarea-address' name='address'>
+            </div>
             </div>
             <span class='submit grey'></span>
             </form>
@@ -90,8 +90,10 @@ const createSuccess = () => {
 			<p>团队名称：王小二</p>
 			<p>团队编号：0214895</p>
             <div class='adr'>
-                王小二 13445674567<br/>
-                湖北省武汉市洪山区光谷步行街128号烟酒行
+                <div>
+                    王小二 13445674567<br/>
+                    湖北省武汉市洪山区光谷步行街128号烟酒行
+                </div>
             </div>
             <span class='start-btn'></span>
             </div>
